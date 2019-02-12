@@ -4,7 +4,8 @@ module.exports = {
             warnings: true,
             errors: true
         },
-        port: 9000
+        port: 9000,
+        proxy: 'http://localhost:11872'
     },
     configureWebpack: {
         plugins: [
