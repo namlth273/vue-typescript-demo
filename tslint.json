@@ -10,7 +10,7 @@
   },
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
-    "prettier": true,
+    "prettier": false,
     "quotemark": [true, "double"],
     "indent": [true, "spaces", 2],
     "interface-name": false,

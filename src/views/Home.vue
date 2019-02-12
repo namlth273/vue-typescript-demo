@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <button class="btn btn-primary">Hello</button>
+    <button class="btn btn-primary m-3">
+      <i class="fas fa-home"></i>
+      Home
+    </button>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
