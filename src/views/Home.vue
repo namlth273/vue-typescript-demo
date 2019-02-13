@@ -1,10 +1,36 @@
 <template>
   <div class="home">
-    <button class="btn btn-primary" @click="homeClick" :disabled="isHomeBtnDisabled">Hello</button>
-    <button class="btn btn-primary m-3" @click="click">
+    <button class="btn btn-primary" :disabled="isHomeBtnDisabled">Hello</button>
+    <button class="btn btn-primary m-3">
       <i class="fas fa-home"></i>
       Home
     </button>
+    <p>{{selectedColor}}</p>
+    <p>{{selectedSize}}</p>
+    <b-dropdown id="ddlColor"
+                name="ddlColor"
+                v-model="selectedColor"
+                text="Select Item"
+                variant="primary"
+                class="m-md-2 mx-3">
+        <!-- <b-dropdown-item disabled value="0">Select an Item</b-dropdown-item> -->
+        <b-dropdown-item v-for="option in getColors"
+          @click="selectedColor = option"
+          :key="option.id"
+          :value="option.id">{{option.description}}</b-dropdown-item>           
+    </b-dropdown>
+    <b-dropdown id="ddlSize"
+                name="ddlSize"
+                v-model="selectedSize"
+                text="Select Item"
+                variant="primary"
+                class="m-md-2">
+        <!-- <b-dropdown-item disabled value="0">Select an Item</b-dropdown-item> -->
+        <b-dropdown-item v-for="option in getSizes"
+          @click="selectedSize = option"
+          :key="option.id"
+          :value="option.id">{{option.description}}</b-dropdown-item>           
+    </b-dropdown>
     <b-table striped hover :items="getProducts" :fields="fields">
       <template slot="actions" slot-scope="row">
         <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
@@ -22,8 +48,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-import { IProduct } from "@/store/models";
+import { IProduct, IEnumModel } from "@/store/models";
 import products from "@/store/modules/products";
+import colors from "@/store/modules/colors";
+import sizes from "@/store/modules/sizes";
 
 @Component({
   components: {
@@ -31,7 +59,9 @@ import products from "@/store/modules/products";
   }
 })
 export default class Home extends Vue {
-  products: IProduct[] | null = [];
+  selectedColor: IEnumModel | null = null;
+  selectedSize: IEnumModel | null = null;
+
   fields = [
     { key: "name", label: "Product Name", sortable: true, sortDirection: "desc" },
     { key: "description", label: "Product Description", sortable: true, "class": "text-center" },
@@ -44,8 +74,30 @@ export default class Home extends Vue {
 
   mounted() {
     this.$nextTick(() => {
-      this.loadAll();
+      sizes.getAll();
+      colors.getAll();
+      products.getAll();
     });
+  }
+
+  get getColors(): Array<IEnumModel> {
+    const result = colors.getColors;
+
+    if(!result) {
+      return new Array<IEnumModel>();
+    }
+
+    return result;
+  }
+
+  get getSizes(): Array<IEnumModel> {
+    const result = sizes.getSizes;
+
+    if(!result) {
+      return new Array<IEnumModel>();
+    }
+
+    return result;
   }
 
   get getProducts(): Array<IProduct> {
@@ -56,10 +108,6 @@ export default class Home extends Vue {
     }
 
     return result;
-  }
-
-  click() {
-    this.products = [];
   }
 
   isSellBtnActive(item: IProduct) {
@@ -87,16 +135,6 @@ export default class Home extends Vue {
       console.log("Sell Ok");
       this.isSellBtnDisabled = false;
     })
-  }
-
-  homeClick() {
-    this.isHomeBtnDisabled = true;
-    this.loadAll();
-    setTimeout(() => this.isHomeBtnDisabled = false, 1000);
-  }
-
-  loadAll() {
-    products.getAll();
   }
 }
 </script>

@@ -7,6 +7,11 @@ export interface IProduct{
     quantity: number
 }
 
+export interface IEnumModel {
+    id: Guid;
+    description: string;
+}
+
 export interface IBuyProductCommand {
     productId: Guid;
     quantity: number;
