@@ -6,8 +6,8 @@ import {
     Action,
   } from "vuex-module-decorators";
 import store from "@/store";
-import { IProduct } from "@/store/models";
-import { getAll } from "./product-api";
+import { IProduct, IBuyProductCommand, ISellProductCommand } from "@/store/models";
+import { getAll, buy, sell } from "./product-api";
   
 @Module({
   namespaced: true,
@@ -31,6 +31,18 @@ class ProductsModule extends VuexModule {
   async getAll() {
     const products = await getAll();
     return products;
+  }
+
+  @Action({ commit: "setProducts" })
+  async buy(product: IBuyProductCommand) {
+    await buy(product);
+    return await this.getAll();
+  }
+
+  @Action({ commit: "setProducts" })
+  async sell(product: ISellProductCommand) {
+    await sell(product);
+    return await this.getAll();
   }
 }
 
