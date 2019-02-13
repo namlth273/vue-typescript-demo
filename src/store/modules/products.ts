@@ -36,13 +36,13 @@ class ProductsModule extends VuexModule {
   @Action({ commit: "setProducts" })
   async buy(product: IBuyProductCommand) {
     await buy(product);
-    return await this.getAll();
+    return await getAll();
   }
 
   @Action({ commit: "setProducts" })
   async sell(product: ISellProductCommand) {
     await sell(product);
-    return await this.getAll();
+    return await getAll();
   }
 }
 
