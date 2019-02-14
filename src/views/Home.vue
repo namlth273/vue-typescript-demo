@@ -22,6 +22,10 @@
         <b-form-input id="txtBuyPrice" type="number" class="col-md-2 mx-3" placeholder="Buy price..." v-model="buyPrice"></b-form-input>
         <b-form-input id="`txtSellPrice" type="number" class="col-md-2 mx-3" placeholder="Sell price..." v-model="sellPrice"></b-form-input>
     </div>
+    <div class="d-flex justify-content-center m-3">
+        <input class="form-control col-md-2 mx-3" v-model="filters[`name`]" placeholder="Filter name..."/>
+        <b-form-input id="`txtSellPrice" type="number" class="col-md-2 mx-3" placeholder="Filter buy price..." v-model="filters[`buyPrice`]"></b-form-input>
+    </div>
     <div class="d-flex flex-column mx-3">
       <b-table striped hover :items="getProducts" :fields="productFields">
         <template slot="actions" slot-scope="row">
@@ -31,7 +35,7 @@
           </button>
         </template>
       </b-table>
-      <b-table striped hover :items="getProductInventories" :fields="fields">
+      <b-table striped hover :items="getFilteredInventories" :fields="fields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <button class="btn btn-primary mx-3" @click.stop="buyProductInventory(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
@@ -64,6 +68,12 @@ export default class Home extends Vue {
   selectedSize: IEnumModel | null = null;
   buyPrice: number | null = null;
   sellPrice: number | null = null;
+  filters = {
+    name: "",
+    buyPrice: "",
+  }
+  filterName: string | null = null;
+  filterBuyPrice: number | null = null;
 
   get getSelectedColorId() {
     if (this.selectedColor)
@@ -78,8 +88,8 @@ export default class Home extends Vue {
   }
 
   productFields = [
-    { key: "name", label: "Product Name", sortable: true, sortDirection: "desc" },
-    { key: "description", label: "Product Description", sortable: true, "class": "text-center" },
+    { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
+    { key: "description", label: "Description", sortable: true, "class": "text-center" },
     { key: "actions", label: "Actions" }
   ];
 
@@ -104,6 +114,8 @@ export default class Home extends Vue {
       products.getAll();
       products.getAllInventory();
     });
+
+    console.log(this.filters["name"]);
   }
 
   get getColors(): Array<IEnumModel> {
@@ -134,6 +146,16 @@ export default class Home extends Vue {
     }
 
     return result;
+  }
+
+  get getFilteredInventories(): Array<IProduct> {
+    const filtered = this.getProductInventories.filter(item => {
+      return Object.keys(this.filters).every(key =>
+      {
+        return String(item[key]).toLowerCase().includes(this.filters[key].toLowerCase())
+      }
+    )});
+    return filtered.length > 0 ? filtered : [];
   }
 
   get getProductInventories(): Array<IProduct> {
