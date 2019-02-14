@@ -6,14 +6,19 @@ export async function getAll(): Promise<IProduct[]> {
     return response.data as IProduct[];
 }
 
+export async function getAllInventory(): Promise<IProduct[]> {
+    const response = await baseApi.post("/productinventory/getall");
+    return response.data as IProduct[];
+}
+
 export async function buy(product: IBuyProductCommand): Promise<void> {
-    await baseApi.post("/product/buy",
+    await baseApi.post("/productinventory/buy",
         product
     );
 }
 
 export async function sell(product: ISellProductCommand): Promise<void> {
-    await baseApi.post("/product/sell",
+    await baseApi.post("/productinventory/sell",
         product
     );
 }

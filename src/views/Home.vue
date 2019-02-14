@@ -1,47 +1,48 @@
 <template>
   <div class="home">
-    <button class="btn btn-primary" :disabled="isHomeBtnDisabled">Hello</button>
-    <button class="btn btn-primary m-3">
-      <i class="fas fa-home"></i>
-      Home
-    </button>
-    <p>{{selectedColor}}</p>
-    <p>{{selectedSize}}</p>
-    <b-dropdown id="ddlColor"
-                name="ddlColor"
-                v-model="selectedColor"
-                text="Select Item"
-                variant="primary"
-                class="m-md-2 mx-3">
-        <!-- <b-dropdown-item disabled value="0">Select an Item</b-dropdown-item> -->
-        <b-dropdown-item v-for="option in getColors"
-          @click="selectedColor = option"
+    <div class="d-flex justify-content-center m-3">
+      <b-form-select v-model="selectedColor" class="col-md-2 mx-3">
+        <option :value="null" selected>Select Color</option>
+        <option class="" v-for="option in getColors"
           :key="option.id"
-          :value="option.id">{{option.description}}</b-dropdown-item>           
-    </b-dropdown>
-    <b-dropdown id="ddlSize"
-                name="ddlSize"
-                v-model="selectedSize"
-                text="Select Item"
-                variant="primary"
-                class="m-md-2">
-        <!-- <b-dropdown-item disabled value="0">Select an Item</b-dropdown-item> -->
-        <b-dropdown-item v-for="option in getSizes"
-          @click="selectedSize = option"
+          :value="option">
+          {{option.description}}
+        </option>
+      </b-form-select>
+      <b-form-select v-model="selectedSize" class="col-md-2 mx-3">
+        <option :value="null" selected>Select Size</option>
+        <option v-for="option in getSizes"
           :key="option.id"
-          :value="option.id">{{option.description}}</b-dropdown-item>           
-    </b-dropdown>
-    <b-table striped hover :items="getProducts" :fields="fields">
-      <template slot="actions" slot-scope="row">
-        <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-        <button class="btn btn-primary mx-3" @click.stop="buyProduct(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
-            Buy
-        </button>
-        <button class="btn btn-primary" @click.stop="sellProduct(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
-            Sell
-        </button>
-      </template>
-    </b-table>
+          :value="option">
+          {{option.description}}
+        </option>
+      </b-form-select>
+    </div>
+    <div class="d-flex justify-content-center m-3">
+        <b-form-input id="txtBuyPrice" type="number" class="col-md-2 mx-3" placeholder="Buy price..." v-model="buyPrice"></b-form-input>
+        <b-form-input id="`txtSellPrice" type="number" class="col-md-2 mx-3" placeholder="Sell price..." v-model="sellPrice"></b-form-input>
+    </div>
+    <div class="d-flex flex-column mx-3">
+      <b-table striped hover :items="getProducts" :fields="productFields">
+        <template slot="actions" slot-scope="row">
+          <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
+          <button class="btn btn-primary mx-3" @click.stop="buyProduct(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
+              Buy
+          </button>
+        </template>
+      </b-table>
+      <b-table striped hover :items="getProductInventories" :fields="fields">
+        <template slot="actions" slot-scope="row">
+          <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
+          <button class="btn btn-primary mx-3" @click.stop="buyProductInventory(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
+              Buy
+          </button>
+          <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
+              Sell
+          </button>
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 
@@ -61,11 +62,35 @@ import sizes from "@/store/modules/sizes";
 export default class Home extends Vue {
   selectedColor: IEnumModel | null = null;
   selectedSize: IEnumModel | null = null;
+  buyPrice: number | null = null;
+  sellPrice: number | null = null;
 
-  fields = [
+  get getSelectedColorId() {
+    if (this.selectedColor)
+      return this.selectedColor.id;
+    return null;
+  }
+
+  get getSelectedSizeId() {
+    if (this.selectedSize)
+      return this.selectedSize.id;
+    return null;
+  }
+
+  productFields = [
     { key: "name", label: "Product Name", sortable: true, sortDirection: "desc" },
     { key: "description", label: "Product Description", sortable: true, "class": "text-center" },
+    { key: "actions", label: "Actions" }
+  ];
+
+  fields = [
+    { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
+    { key: "description", label: "Description", sortable: true, "class": "text-center" },
     { key: "quantity", label: "Quantity" },
+    { key: "color", label: "Color" },
+    { key: "size", label: "Size" },
+    { key: "buyPrice", label: "Buy Price" },
+    { key: "sellPrice", label: "Sell Price" },
     { key: "actions", label: "Actions" }
   ];
   isHomeBtnDisabled: boolean = false;
@@ -77,6 +102,7 @@ export default class Home extends Vue {
       sizes.getAll();
       colors.getAll();
       products.getAll();
+      products.getAllInventory();
     });
   }
 
@@ -110,6 +136,16 @@ export default class Home extends Vue {
     return result;
   }
 
+  get getProductInventories(): Array<IProduct> {
+    const result = products.getProductInventories;
+
+    if(!result) {
+      return new Array<IProduct>();
+    }
+
+    return result;
+  }
+
   isSellBtnActive(item: IProduct) {
     return item.quantity > 0 && !this.isSellBtnDisabled;
   }
@@ -118,19 +154,40 @@ export default class Home extends Vue {
     this.isBuyBtnDisabled = true;
     products.buy({
       productId: item.id,
-      quantity: 1
+      quantity: 1,
+      buyPrice: this.buyPrice,
+      sellPrice: this.sellPrice,
+      productColorId: this.getSelectedColorId,
+      productSizeId: this.getSelectedSizeId,
     }).then((res) => {
       console.log("Buy Ok");
       this.isBuyBtnDisabled = false;
     })
   }
 
-  sellProduct(item: IProduct, index: number, button: Element) {
+  buyProductInventory(item: IProduct, index: number, button: Element) {
+    this.isBuyBtnDisabled = true;
+    products.buyInventory({
+      productId: item.id,
+      quantity: 1,
+      buyPrice: item.buyPrice,
+      sellPrice: item.sellPrice,
+      productColorId: item.productColorId,
+      productSizeId: item.productSizeId,
+    }).then((res) => {
+      console.log("Buy Ok");
+      this.isBuyBtnDisabled = false;
+    })
+  }
+
+  sellProductInventory(item: IProduct, index: number, button: Element) {
     this.isSellBtnDisabled = true;
 
-    products.sell({
+    products.sellInventory({
       productId: item.id,
-      quantity: 1
+      quantity: 1,
+      productColorId: item.productColorId,
+      productSizeId: item.productSizeId,
     }).then((res) => {
       console.log("Sell Ok");
       this.isSellBtnDisabled = false;

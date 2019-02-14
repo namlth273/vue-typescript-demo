@@ -4,10 +4,11 @@ import {
     getModule,
     Mutation,
     Action,
+    MutationAction,
   } from "vuex-module-decorators";
 import store from "@/store";
 import { IProduct, IBuyProductCommand, ISellProductCommand } from "@/store/models";
-import { getAll, buy, sell } from "./product-api";
+import { getAll, buy, sell, getAllInventory } from "./product-api";
   
 @Module({
   namespaced: true,
@@ -17,6 +18,11 @@ import { getAll, buy, sell } from "./product-api";
 })
 class ProductsModule extends VuexModule {
   products: IProduct[] | null = null;
+  productInventories: IProduct[] | null = null;
+
+  get getProductInventories() {
+    return this.productInventories;
+  }
 
   get getProducts() {
     return this.products;
@@ -26,6 +32,11 @@ class ProductsModule extends VuexModule {
   setProducts(products: IProduct[]) {
     this.products = products;
   }
+
+  @Mutation
+  setProductInventories(products: IProduct[]) {
+    this.productInventories = products;
+  }
   
   @Action({ commit: "setProducts" })
   async getAll() {
@@ -33,16 +44,33 @@ class ProductsModule extends VuexModule {
     return products;
   }
 
-  @Action({ commit: "setProducts" })
-  async buy(product: IBuyProductCommand) {
-    await buy(product);
-    return await getAll();
+  @Action({ commit: "setProductInventories" })
+  async getAllInventory() {
+    const products = await getAllInventory();
+    return products;
   }
 
-  @Action({ commit: "setProducts" })
-  async sell(product: ISellProductCommand) {
+  @MutationAction({ mutate: ["products", "productInventories"] })
+  async buy(product: IBuyProductCommand) {
+    await buy(product);
+    const invetories = await getAllInventory();
+    const prods = await getAll();
+    return {
+      products: prods,
+      productInventories: invetories
+    }
+  }
+
+  @Action({ commit: "setProductInventories" })
+  async buyInventory(product: IBuyProductCommand) {
+    await buy(product);
+    return await getAllInventory();
+  }
+
+  @Action({ commit: "setProductInventories" })
+  async sellInventory(product: ISellProductCommand) {
     await sell(product);
-    return await getAll();
+    return await getAllInventory();
   }
 }
 
