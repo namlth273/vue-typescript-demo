@@ -30,20 +30,17 @@
       <b-table striped hover :items="getProducts" :fields="productFields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <button class="btn btn-primary mx-3" @click.stop="buyProduct(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
-              Buy
-          </button>
+          <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">Buy</ui-button>
         </template>
       </b-table>
       <b-table hover :items="getFilteredInventories" :fields="fields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <button class="btn btn-primary mx-3" @click.stop="buyProductInventory(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
-              Buy
-          </button>
-          <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
+          <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">Buy</ui-button>
+          <ui-button class="mx-2" color="primary" :loading="isSellBtnLoading" @click.stop="sellProductInventory(row.item, row.index, $event.target)">Sell</ui-button>
+          <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
               Sell
-          </button>
+          </button> -->
         </template>
       </b-table>
       <b-pagination class="iot-module-paging"
@@ -69,11 +66,14 @@ import { IProduct, IEnumModel } from "@/store/models";
 import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
+import "keen-ui/src/bootstrap";
+import { UiButton } from "keen-ui/src";
 import "@/scss/home.scss";
 
 @Component({
   components: {
-    HelloWorld
+    HelloWorld,
+    UiButton
   }
 })
 export default class Home extends Vue {
@@ -117,9 +117,8 @@ export default class Home extends Vue {
     { key: "sellPrice", label: "Sell Price" },
     { key: "actions", label: "Actions" }
   ];
-  isHomeBtnDisabled: boolean = false;
-  isBuyBtnDisabled: boolean = false;
-  isSellBtnDisabled: boolean = false;
+  isBuyBtnLoading: boolean = false;
+  isSellBtnLoading: boolean = false;
 
   mounted() {
     this.$nextTick(() => {
@@ -183,11 +182,11 @@ export default class Home extends Vue {
   }
 
   isSellBtnActive(item: IProduct) {
-    return item.quantity > 0 && !this.isSellBtnDisabled;
+    return item.quantity > 0 && !this.isSellBtnLoading;
   }
 
   buyProduct(item: IProduct, index: number, button: Element) {
-    this.isBuyBtnDisabled = true;
+    this.isBuyBtnLoading = true;
     products.buy({
       productId: item.id,
       quantity: 1,
@@ -197,12 +196,12 @@ export default class Home extends Vue {
       productSizeId: this.getSelectedSizeId,
     }).then((res) => {
       console.log("Buy Ok");
-      this.isBuyBtnDisabled = false;
+      this.isBuyBtnLoading = false;
     })
   }
 
   buyProductInventory(item: IProduct, index: number, button: Element) {
-    this.isBuyBtnDisabled = true;
+    this.isBuyBtnLoading = true;
     products.buyInventory({
       productId: item.id,
       quantity: 1,
@@ -212,12 +211,12 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     }).then((res) => {
       console.log("Buy Ok");
-      this.isBuyBtnDisabled = false;
+      this.isBuyBtnLoading = false;
     })
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
-    this.isSellBtnDisabled = true;
+    this.isSellBtnLoading = true;
 
     products.sellInventory({
       productId: item.id,
@@ -226,7 +225,7 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     }).then((res) => {
       console.log("Sell Ok");
-      this.isSellBtnDisabled = false;
+      this.isSellBtnLoading = false;
     })
   }
 }

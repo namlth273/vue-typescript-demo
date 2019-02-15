@@ -13,6 +13,13 @@ module.exports = {
             //new ForkTsCheckerWebpackPlugin()
         ]
     },
+    css: {
+        loaderOptions: {
+            sass: {
+                data: `@import "@/scss/_variables.scss";`
+            }
+        }
+    },
     chainWebpack: (config) => {
         // config.module.rule('vue').use('vue-loader').loader('vue-loader').tap((options) => {
         //     if (!options.hasOwnProperty('loaders')) {
