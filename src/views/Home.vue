@@ -35,7 +35,7 @@
           </button>
         </template>
       </b-table>
-      <b-table striped hover :items="getFilteredInventories" :fields="fields">
+      <b-table hover :items="getFilteredInventories" :fields="fields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <button class="btn btn-primary mx-3" @click.stop="buyProductInventory(row.item, row.index, $event.target)" :disabled="isBuyBtnDisabled">
@@ -46,6 +46,18 @@
           </button>
         </template>
       </b-table>
+      <b-pagination class="iot-module-paging"
+        align="center"
+        size="md"
+        :total-rows="100"
+        v-model="currentPage"
+        :per-page="10"
+        :limit="6"
+        :first-text="`<i class='fas fa-angle-double-left'></i>`"
+        :prev-text="`<i class='fas fa-angle-left'></i>`"
+        :next-text="`<i class='fas fa-angle-right'></i>`"
+        :last-text="`<i class='fas fa-angle-double-right'></i>`"
+      />
     </div>
   </div>
 </template>
@@ -57,6 +69,7 @@ import { IProduct, IEnumModel } from "@/store/models";
 import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
+import "@/scss/home.scss";
 
 @Component({
   components: {
@@ -74,6 +87,7 @@ export default class Home extends Vue {
   }
   filterName: string | null = null;
   filterBuyPrice: number | null = null;
+  currentPage: number = 1;
 
   get getSelectedColorId() {
     if (this.selectedColor)
@@ -94,7 +108,7 @@ export default class Home extends Vue {
   ];
 
   fields = [
-    { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
+    { key: "name", label: "Name", sortable: true },
     { key: "description", label: "Description", sortable: true, "class": "text-center" },
     { key: "quantity", label: "Quantity" },
     { key: "color", label: "Color" },
