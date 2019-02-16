@@ -1,22 +1,40 @@
 <template>
   <div class="home">
+    <div class="row">
+      <div class="col-6">
+        <ui-select class="mx-3"
+          has-search
+          placeholder="Select color..."
+          :keys="{ label: 'description', value: 'id' }"
+          :options="getColors"
+          v-model="selectedColor">
+          <!-- <template slot-scope="props" slot="option">
+            <code>{{ props }}</code>
+          </template> -->
+        </ui-select>
+      </div>
+      <div class="col-6">
+        <b-form-select v-model="selectedSize">
+          <option :value="null" selected>Select Size</option>
+          <option v-for="option in getSizes"
+            :key="option.id"
+            :value="option">
+            {{option.description}}
+          </option>
+        </b-form-select>
+      </div>
+    </div>
     <div class="d-flex justify-content-center m-3">
-      <b-form-select v-model="selectedColor" class="col-md-2 mx-3">
+        
+      <!-- <b-form-select v-model="selectedColor" class="col-md-2 mx-3">
         <option :value="null" selected>Select Color</option>
         <option class="" v-for="option in getColors"
           :key="option.id"
           :value="option">
           {{option.description}}
         </option>
-      </b-form-select>
-      <b-form-select v-model="selectedSize" class="col-md-2 mx-3">
-        <option :value="null" selected>Select Size</option>
-        <option v-for="option in getSizes"
-          :key="option.id"
-          :value="option">
-          {{option.description}}
-        </option>
-      </b-form-select>
+      </b-form-select> -->
+      
     </div>
     <div class="d-flex justify-content-center m-3">
         <b-form-input id="txtBuyPrice" type="number" class="col-md-2 mx-3" placeholder="Buy price..." v-model="buyPrice"></b-form-input>
@@ -30,14 +48,23 @@
       <b-table striped hover :items="getProducts" :fields="productFields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">Buy</ui-button>
+          <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
+            <v-icon name="plus" class="mr-2"/>
+            Buy
+          </ui-button>
         </template>
       </b-table>
       <b-table hover :items="getFilteredInventories" :fields="fields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">Buy</ui-button>
-          <ui-button class="mx-2" color="primary" :loading="isSellBtnLoading" @click.stop="sellProductInventory(row.item, row.index, $event.target)">Sell</ui-button>
+          <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">
+            <v-icon name="plus" class="mr-2"/>
+            Buy
+          </ui-button>
+          <ui-button class="mx-2" color="primary" :loading="isSellBtnLoading" @click.stop="sellProductInventory(row.item, row.index, $event.target)">
+            <v-icon name="dollar-sign" class="mr-2"/>
+            Sell
+          </ui-button>
           <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
               Sell
           </button> -->
@@ -60,6 +87,7 @@
 </template>
 
 <script lang="ts">
+import { Guid } from "guid-typescript";
 import { Component, Vue } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 import { IProduct, IEnumModel } from "@/store/models";
@@ -67,17 +95,18 @@ import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
 import "keen-ui/src/bootstrap";
-import { UiButton } from "keen-ui/src";
+import { UiButton, UiSelect } from "keen-ui/src";
 import "@/scss/home.scss";
 
 @Component({
   components: {
     HelloWorld,
-    UiButton
+    UiButton,
+    UiSelect
   }
 })
 export default class Home extends Vue {
-  selectedColor: IEnumModel | null = null;
+  selectedColor: IProduct = {} as IProduct;
   selectedSize: IEnumModel | null = null;
   buyPrice: number | null = null;
   sellPrice: number | null = null;
@@ -91,7 +120,7 @@ export default class Home extends Vue {
 
   get getSelectedColorId() {
     if (this.selectedColor)
-      return this.selectedColor.id;
+      return this.selectedColor;
     return null;
   }
 

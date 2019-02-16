@@ -20,6 +20,9 @@ module.exports = {
             }
         }
     },
+    transpileDependencies: [
+        /\bvue-awesome\b/
+    ],
     chainWebpack: (config) => {
         // config.module.rule('vue').use('vue-loader').loader('vue-loader').tap((options) => {
         //     if (!options.hasOwnProperty('loaders')) {
