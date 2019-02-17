@@ -1,7 +1,7 @@
 import { baseApi } from "@/store/api";
-import { IEnumModel } from "../models";
+import { IProductColor } from "../models";
 
-export async function getAll(): Promise<IEnumModel[]> {
+export async function getAll(): Promise<Array<IProductColor>> {
     const response = await baseApi.post("/color/getall");
-    return response.data as IEnumModel[];
+    return response.data as Array<IProductColor>;
 }

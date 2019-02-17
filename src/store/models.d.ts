@@ -31,3 +31,11 @@ export interface ISellProductCommand {
     productColorId: Guid | null;
     productSizeId: Guid | null;
 }
+
+export interface IProductColor extends IEnumModel {
+    colorType: number;
+}
+
+export interface IProductSize extends IEnumModel {
+    sizeType: number;
+}

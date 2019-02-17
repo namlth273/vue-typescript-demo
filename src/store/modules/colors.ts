@@ -6,7 +6,7 @@ import {
     Action,
   } from "vuex-module-decorators";
 import store from "@/store";
-import { IEnumModel } from "@/store/models";
+import { IProductColor } from "@/store/models";
 import { getAll } from "./color-api";
   
 @Module({
@@ -16,15 +16,25 @@ import { getAll } from "./color-api";
   dynamic: true,
 })
 class ColorsModule extends VuexModule {
-  colors: IEnumModel[] | null = null;
+  colors: Array<IProductColor> = new Array<IProductColor>();
+  selectedColor: IProductColor = {} as IProductColor;
 
   get getColors() {
     return this.colors;
   }
 
+  get getSelectedColor() {
+    return this.selectedColor;
+  }
+
   @Mutation
-  setColors(colors: IEnumModel[]) {
+  setColors(colors: Array<IProductColor>) {
     this.colors = colors;
+  }
+
+  @Mutation
+  SETSELECTEDCOLOR(selectedColor: IProductColor) {
+    this.selectedColor = selectedColor;
   }
   
   @Action({ commit: "setColors" })

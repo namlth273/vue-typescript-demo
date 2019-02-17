@@ -6,7 +6,7 @@ import {
     Action,
   } from "vuex-module-decorators";
 import store from "@/store";
-import { IEnumModel } from "@/store/models";
+import { IProductSize } from "@/store/models";
 import { getAll } from "./size-api";
   
 @Module({
@@ -16,15 +16,25 @@ import { getAll } from "./size-api";
   dynamic: true,
 })
 class SizesModule extends VuexModule {
-  sizes: IEnumModel[] | null = null;
+  sizes: Array<IProductSize> = new Array<IProductSize>();
+  selectedSize: IProductSize = {} as IProductSize;
 
   get getSizes() {
     return this.sizes;
   }
 
+  get getSelectedSize() {
+    return this.selectedSize;
+  }
+
   @Mutation
-  setSizes(sizes: IEnumModel[]) {
+  setSizes(sizes: IProductSize[]) {
     this.sizes = sizes;
+  }
+  
+  @Mutation
+  SETSELECTEDSIZE(selectedSize: IProductSize) {
+    this.selectedSize = selectedSize;
   }
   
   @Action({ commit: "setSizes" })
