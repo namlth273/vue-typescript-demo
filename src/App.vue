@@ -4,13 +4,13 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
+    <b-container fluid>
+      <b-row>
+        <b-col>
           <router-view/>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

@@ -8,21 +8,25 @@ module.exports = {
         // proxy: 'https://namlth-demo-api.azurewebsites.net/',
         port: 9000
     },
+
     configureWebpack: {
         plugins: [
             //new ForkTsCheckerWebpackPlugin()
         ]
     },
+
     css: {
         loaderOptions: {
             sass: {
-                data: `@import "@/scss/_variables.scss";`
+                data: '@import "@/scss/_variables.scss";'
             }
         }
     },
+
     transpileDependencies: [
         /\bvue-awesome\b/
     ],
+
     chainWebpack: (config) => {
         // config.module.rule('vue').use('vue-loader').loader('vue-loader').tap((options) => {
         //     if (!options.hasOwnProperty('loaders')) {
@@ -66,5 +70,12 @@ module.exports = {
         //         }
         //     }
         // });
-    }
+    },
+
+    publicPath: undefined,
+    outputDir: undefined,
+    assetsDir: undefined,
+    runtimeCompiler: undefined,
+    productionSourceMap: false,
+    parallel: undefined
 }

@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { UiSelect } from "keen-ui/src";
+import UiSelect from "keen-ui/src/UiSelect.vue";
 import { IProduct, IEnumModel, IProductSize } from "@/store/models";
 import sizes from "@/store/modules/sizes";
 

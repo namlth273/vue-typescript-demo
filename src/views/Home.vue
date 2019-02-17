@@ -2,8 +2,8 @@
   <div class="home">
     <b-row class="my-3">
       <b-col>
-        <b-button v-b-modal.modal1>Launch demo modal</b-button>
-        <b-modal id="modal1" title="Product List">
+        <b-button primary v-b-modal.modal1>Launch demo modal</b-button>
+        <b-modal id="modal1" title="Product List" lazy>
           <b-container fluid>
             <b-row>
               <b-col>
@@ -75,7 +75,7 @@
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
-            <v-icon name="plus" class="mr-2"/>
+            <!-- <v-icon name="plus" class="mr-2"/> -->
             Buy
           </ui-button>
         </template>
@@ -84,11 +84,11 @@
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">
-            <v-icon name="plus" class="mr-2"/>
+            <!-- <v-icon name="plus" class="mr-2"/> -->
             Buy
           </ui-button>
           <ui-button class="mx-2" color="primary" :loading="isSellBtnLoading" @click.stop="sellProductInventory(row.item, row.index, $event.target)">
-            <v-icon name="dollar-sign" class="mr-2"/>
+            <!-- <v-icon name="dollar-sign" class="mr-2"/> -->
             Sell
           </ui-button>
           <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
@@ -96,18 +96,7 @@
           </button> -->
         </template>
       </b-table>
-      <b-pagination class="iot-module-paging"
-        align="center"
-        size="md"
-        :total-rows="100"
-        v-model="currentPage"
-        :per-page="10"
-        :limit="6"
-        :first-text="`<i class='fas fa-angle-double-left'></i>`"
-        :prev-text="`<i class='fas fa-angle-left'></i>`"
-        :next-text="`<i class='fas fa-angle-right'></i>`"
-        :last-text="`<i class='fas fa-angle-double-right'></i>`"
-      />
+      <IotModulesPagination></IotModulesPagination>
     </div>
   </div>
 </template>
@@ -115,13 +104,14 @@
 <script lang="ts">
 import { Guid } from "guid-typescript";
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import IotModulesPagination from "@/components/iot-modules-pagination.vue";
 import { IProduct, IEnumModel, IProductColor, IProductSize } from "@/store/models";
 import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
 import "keen-ui/src/bootstrap";
-import { UiButton, UiSelect } from "keen-ui/src";
+import UiButton from "keen-ui/src/UiButton.vue";
+import UiSelect from "keen-ui/src/UiSelect.vue";
 import { debounce } from "ts-debounce";
 import ColorSelection from "@/components/color-selection.vue";
 import SizeSelection from "@/components/size-selection.vue";
@@ -129,7 +119,7 @@ import "@/scss/home.scss";
 
 @Component({
   components: {
-    HelloWorld,
+    IotModulesPagination,
     ColorSelection,
     SizeSelection,
     UiButton,
@@ -153,7 +143,6 @@ export default class Home extends Vue {
     sellPrice: "",
     description: ""
   }
-  currentPage: number = 1;
   productsSelection: IProduct[] = [];
 
   get getSelectedColor() {
