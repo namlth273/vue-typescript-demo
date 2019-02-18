@@ -139,8 +139,6 @@ export default class Home extends Vue {
     color: "",
     size: "",
     quantity: "",
-    buyPrice: "",
-    sellPrice: "",
     description: ""
   }
   productsSelection: IProduct[] = [];
@@ -184,7 +182,7 @@ export default class Home extends Vue {
   created() {
     this.search = debounce((query) => {
       const filtered = this.getProductInventories.filter(item => {
-        return Object.keys(this.filtersProductSelection).every(key =>
+        return Object.keys(this.filtersProductSelection).some(key =>
         {
           return String(item[key]).toLowerCase().includes(query.toLowerCase());
         }
