@@ -7,7 +7,7 @@
           <b-container fluid>
             <b-row>
               <b-col>
-                <ui-select class="mx-3"
+                <ui-select class=""
                   has-search
                   :loading="selectProductLoading"
                   disable-filter
