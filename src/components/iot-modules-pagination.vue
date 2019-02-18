@@ -1,9 +1,10 @@
 <template>
     <b-pagination class="iot-module-paging"
+        @change="onPageChange"
         align="center"
         size="md"
         :total-rows="getItemsCount"
-        :per-page="itemPerPage"
+        :per-page="getItemsPerPage"
         v-model="currentPage"
         :limit="6">
         <div slot="first-text"><span class="paging-arrow back"></span></div>
@@ -20,7 +21,14 @@ import products from "@/store/modules/products";
 @Component
 export default class IotModulesPagination extends Vue {
     currentPage: number = 1;
-    itemPerPage: number = 5;
+
+    get getCurrentPage() {
+        return products.getCurrentPage;
+    }
+
+    get getItemsPerPage() {
+        return products.getItemsPerPage;
+    }
 
     get getItemsCount() {
         if (products.getProductInventories)
@@ -29,7 +37,11 @@ export default class IotModulesPagination extends Vue {
     }
 
     get getPagesCount() {
-        return Math.ceil(this.getItemsCount / this.itemPerPage);
+        return Math.ceil(this.getItemsCount / this.getItemsPerPage);
+    }
+
+    onPageChange(pageNumber) {
+        products.setCurrentPage(pageNumber);
     }
 }
 </script>

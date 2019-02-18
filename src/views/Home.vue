@@ -80,7 +80,7 @@
           </ui-button>
         </template>
       </b-table>
-      <b-table hover :items="getFilteredInventories" :fields="fields">
+      <b-table hover :items="getFilteredInventories" :fields="fields" :perPage="getItemsPerPage" :currentPage="getCurrentPage">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">
@@ -144,6 +144,14 @@ export default class Home extends Vue {
     description: ""
   }
   productsSelection: IProduct[] = [];
+
+  get getItemsPerPage() {
+    return products.getItemsPerPage;
+  }
+
+  get getCurrentPage() {
+    return products.getCurrentPage;
+  }
 
   get getSelectedColor() {
     return colors.getSelectedColor;

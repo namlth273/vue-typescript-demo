@@ -19,6 +19,16 @@ import { getAll, buy, sell, getAllInventory } from "./product-api";
 class ProductsModule extends VuexModule {
   products: IProduct[] | null = null;
   productInventories: IProduct[] | null = null;
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+
+  get getItemsPerPage(): number {
+    return this.itemsPerPage;
+  }
+
+  get getCurrentPage(): number {
+    return this.currentPage;
+  }
 
   get getProductInventories() {
     return this.productInventories;
@@ -26,6 +36,11 @@ class ProductsModule extends VuexModule {
 
   get getProducts() {
     return this.products;
+  }
+
+  @Mutation
+  setCurrentPage(page: number) {
+    this.currentPage = page;
   }
 
   @Mutation
