@@ -357,7 +357,6 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     });
 
-    // await products.getAllInventory();
     await products.searchInventory(this.filters);
   }
 
@@ -378,7 +377,6 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     });
 
-    await products.getAllInventory();
     await products.searchInventory(this.filters);
   }
 
