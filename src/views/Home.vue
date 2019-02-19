@@ -100,6 +100,7 @@
           </ui-button>
         </template>
       </b-table>
+      <h2>{{getTotalItemsCount}}</h2>
       <b-table hover :items="getFilteredInventories"
         :fields="fields"
         :perPage="getItemsPerPage"
@@ -157,8 +158,13 @@ import "@/scss/home.scss";
   }
 })
 export default class Home extends Vue {
+  isBuyBtnLoading: boolean = false;
+  isSellBtnLoading: boolean = false;
+  selectProductLoading: boolean = false;
+  isFilterNameLoading: boolean = false;
   sortBy: string | null = null;
   selectedProduct: IProduct = {} as IProduct;
+  productsSelection: IProduct[] = [];
   buyPrice: number | null = null;
   sellPrice: number | null = null;
   filters: ISeacchInventoryOption = {
@@ -172,27 +178,6 @@ export default class Home extends Vue {
     quantity: "",
     description: ""
   };
-  productsSelection: IProduct[] = [];
-
-  get getItemsPerPage() {
-    return products.getItemsPerPage;
-  }
-
-  get getCurrentPage() {
-    return products.getCurrentPage;
-  }
-
-  get getSelectedColor() {
-    return colors.getSelectedColor;
-  }
-
-  get getSelectedSize() {
-    return sizes.getSelectedSize;
-  }
-
-  get getInventoryFilterOption() {
-    return products.getInventoryFilterOption;
-  }
 
   productFields = [
     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
@@ -210,10 +195,6 @@ export default class Home extends Vue {
     { key: "sellPrice", label: "Sell Price" },
     { key: "actions", label: "Actions" }
   ];
-  isBuyBtnLoading: boolean = false;
-  isSellBtnLoading: boolean = false;
-  selectProductLoading: boolean = false;
-  isFilterNameLoading: boolean = false;
 
   created() {
     this.search = debounce((query) => {
@@ -256,6 +237,30 @@ export default class Home extends Vue {
   search(query: string) { return; }
 
   filterNameInput(query) { return; }
+
+  get getItemsPerPage() {
+    return products.getItemsPerPage;
+  }
+
+  get getCurrentPage() {
+    return products.getCurrentPage;
+  }
+
+  get getTotalItemsCount() {
+    return products.getFilteredInventories.length;
+  }
+
+  get getSelectedColor() {
+    return colors.getSelectedColor;
+  }
+
+  get getSelectedSize() {
+    return sizes.getSelectedSize;
+  }
+
+  get getInventoryFilterOption() {
+    return products.getInventoryFilterOption;
+  }
 
   get getSortOptions() {
     return this.fields
