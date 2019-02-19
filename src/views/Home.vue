@@ -92,7 +92,7 @@
       </b-col>
     </b-row>
     <div class="d-flex flex-column mx-3">
-      <b-table striped hover :items="getProducts" :fields="productFields" class="d-none">
+      <b-table striped hover :items="getProducts" :fields="productFields">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
