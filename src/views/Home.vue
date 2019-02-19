@@ -237,7 +237,7 @@ export default class Home extends Vue {
 
     this.filterNameInput = (e) => {
       this.isFilterNameLoading = true;
-      filterNameDebounce(e);
+      filterNameDebounce(e); 
     }
   }
 
