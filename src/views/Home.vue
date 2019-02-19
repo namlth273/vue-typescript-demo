@@ -66,6 +66,7 @@
       <div class="col-12 col-md-4 offset-md-2 input-with-progress">
         <input class="form-control" v-model="filters[`name`]" placeholder="Filter name..." @input="filterNameInput"/>
         <ui-progress-circular
+          :stroke="1"
           color="primary"
           type="indeterminate"
           v-show="isFilterNameLoading"
