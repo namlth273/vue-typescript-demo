@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="container-fluid home">
     <b-row class="my-3">
       <b-col>
         <b-button primary v-b-modal.modal1>Launch demo modal</b-button>
@@ -7,7 +7,7 @@
           <b-container fluid>
             <b-row>
               <b-col>
-                <ui-select class="mx-3"
+                <ui-select class=""
                   has-search
                   :loading="selectProductLoading"
                   disable-filter
@@ -63,13 +63,33 @@
       
     </div>
     <div class="row mb-3">
-      <div class="col-12 col-md-4 offset-md-2">
-        <input class="form-control" v-model="filters[`name`]" placeholder="Filter name..."/>
+      <div class="col-12 col-md-4 offset-md-2 input-with-progress">
+        <input class="form-control" v-model="filters[`name`]" placeholder="Filter name..." @input="filterNameInput"/>
+        <ui-progress-circular
+          color="primary"
+          type="indeterminate"
+          v-show="isFilterNameLoading"
+        ></ui-progress-circular>
       </div>
       <div class="col-12 col-md-4">
         <b-form-input id="`txtSellPrice" type="number" placeholder="Filter buy price..." v-model="filters[`buyPrice`]"></b-form-input>
       </div>
     </div>
+    <b-row class="mb-3">
+      <b-col cols="4" offset="2">
+        <b-form-select v-model="sortBy">
+          <option :value="null" selected>Sort by...</option>
+          <option v-for="option in getSortOptions"
+            :key="option.value"
+            :value="option.value">
+            {{option.text}}
+          </option>
+        </b-form-select>
+      </b-col>
+      <b-col cols="4">
+
+      </b-col>
+    </b-row>
     <div class="d-flex flex-column mx-3">
       <b-table striped hover :items="getProducts" :fields="productFields">
         <template slot="actions" slot-scope="row">
@@ -80,7 +100,7 @@
           </ui-button>
         </template>
       </b-table>
-      <b-table hover :items="getFilteredInventories" :fields="fields" :perPage="getItemsPerPage" :currentPage="getCurrentPage">
+      <b-table hover :items="getFilteredInventories" :fields="fields" :perPage="getItemsPerPage" :currentPage="getCurrentPage" :sort-by.sync="sortBy">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">
@@ -103,15 +123,16 @@
 
 <script lang="ts">
 import { Guid } from "guid-typescript";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import IotModulesPagination from "@/components/iot-modules-pagination.vue";
-import { IProduct, IEnumModel, IProductColor, IProductSize } from "@/store/models";
+import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
 import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
 import "keen-ui/src/bootstrap";
 import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
+import UiProgressCircular from "keen-ui/src/UiProgressCircular.vue";
 import { debounce } from "ts-debounce";
 import ColorSelection from "@/components/color-selection.vue";
 import SizeSelection from "@/components/size-selection.vue";
@@ -123,26 +144,26 @@ import "@/scss/home.scss";
     ColorSelection,
     SizeSelection,
     UiButton,
-    UiSelect
+    UiSelect,
+    UiProgressCircular
   }
 })
 export default class Home extends Vue {
+  sortBy: string | null = null;
   selectedProduct: IProduct = {} as IProduct;
   buyPrice: number | null = null;
   sellPrice: number | null = null;
-  filters = {
+  filters: ISeacchInventoryOption = {
     name: "",
-    buyPrice: "",
-  }
+    buyPrice: ""
+  };
   filtersProductSelection = {
     name: "",
     color: "",
     size: "",
     quantity: "",
-    buyPrice: "",
-    sellPrice: "",
     description: ""
-  }
+  };
   productsSelection: IProduct[] = [];
 
   get getItemsPerPage() {
@@ -161,6 +182,10 @@ export default class Home extends Vue {
     return sizes.getSelectedSize;
   }
 
+  get getInventoryFilterOption() {
+    return products.getInventoryFilterOption;
+  }
+
   productFields = [
     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
     { key: "description", label: "Description", sortable: true, "class": "text-center" },
@@ -170,7 +195,7 @@ export default class Home extends Vue {
   fields = [
     { key: "name", label: "Name", sortable: true },
     { key: "description", label: "Description", sortable: true, "class": "text-center" },
-    { key: "quantity", label: "Quantity" },
+    { key: "quantity", label: "Quantity", sortable: true },
     { key: "color", label: "Color" },
     { key: "size", label: "Size" },
     { key: "buyPrice", label: "Buy Price" },
@@ -180,11 +205,12 @@ export default class Home extends Vue {
   isBuyBtnLoading: boolean = false;
   isSellBtnLoading: boolean = false;
   selectProductLoading: boolean = false;
+  isFilterNameLoading: boolean = false;
 
   created() {
     this.search = debounce((query) => {
       const filtered = this.getProductInventories.filter(item => {
-        return Object.keys(this.filtersProductSelection).every(key =>
+        return Object.keys(this.filtersProductSelection).some(key =>
         {
           return String(item[key]).toLowerCase().includes(query.toLowerCase());
         }
@@ -194,6 +220,14 @@ export default class Home extends Vue {
 
       this.selectProductLoading = false;
     }, 1000);
+
+    this.filterNameInput = debounce((e) => {
+      this.isFilterNameLoading = true;
+      this.filters["name"] = e.target.value;
+      setTimeout(() => {
+        products.searchInventory(this.filters).then(() => this.isFilterNameLoading = false);
+      }, 1000);
+    }, 1000);
   }
 
   mounted() {
@@ -201,14 +235,24 @@ export default class Home extends Vue {
       sizes.getAll();
       colors.getAll();
       products.getAll();
-      products.getAllInventory();
-      this.productsSelection = this.getProductInventories;
+      products.getAllInventory().then((res) => {
+        products.searchInventory(this.filters);
+      });
+      // this.productsSelection = this.getProductInventories;
     });
-
-    console.log(this.filters["name"]);
   }
 
-  search(query: string) { return; };
+  search(query: string) { return; }
+
+  filterNameInput(query) { return; }
+
+  get getSortOptions() {
+    return this.fields
+      .filter(f => f.sortable)
+      .map(f => {
+        return { text: f.label, value: f.key }
+      });
+  }
 
   get getColors(): Array<IEnumModel> {
     const result = colors.getColors;
@@ -241,13 +285,14 @@ export default class Home extends Vue {
   }
 
   get getFilteredInventories(): Array<IProduct> {
-    const filtered = this.getProductInventories.filter(item => {
-      return Object.keys(this.filters).every(key =>
-      {
-        return String(item[key]).toLowerCase().includes(this.filters[key].toLowerCase())
-      }
-    )});
-    return filtered.length > 0 ? filtered : [];
+    return products.getFilteredInventories;
+    // const filtered = this.getProductInventories.filter(item => {
+    //   return Object.keys(this.filters).every(key =>
+    //   {
+    //     return String(item[key]).toLowerCase().includes(this.filters[key].toLowerCase())
+    //   }
+    // )});
+    // return filtered.length > 0 ? filtered : [];
   }
 
   get getProductInventories(): Array<IProduct> {
@@ -317,8 +362,7 @@ export default class Home extends Vue {
         return;
     }
     
-    const that = this;
-    that.selectProductLoading = true;
+    this.selectProductLoading = true;
 
     this.search(query);
   }

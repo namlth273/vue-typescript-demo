@@ -7,7 +7,7 @@ import {
     MutationAction,
   } from "vuex-module-decorators";
 import store from "@/store";
-import { IProduct, IBuyProductCommand, ISellProductCommand } from "@/store/models";
+import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption } from "@/store/models";
 import { getAll, buy, sell, getAllInventory } from "./product-api";
   
 @Module({
@@ -17,9 +17,14 @@ import { getAll, buy, sell, getAllInventory } from "./product-api";
   dynamic: true,
 })
 class ProductsModule extends VuexModule {
-  products: IProduct[] | null = null;
-  productInventories: IProduct[] | null = null;
-  itemsPerPage: number = 5;
+  products: Array<IProduct> = new Array<IProduct>();
+  productInventories: Array<IProduct> = new Array<IProduct>();
+  filteredInventories: Array<IProduct> = new Array<IProduct>();
+  inventoryFilterOption: ISeacchInventoryOption = {
+    name: "",
+    buyPrice: ""
+  };
+  itemsPerPage: number = 3;
   currentPage: number = 1;
 
   get getItemsPerPage(): number {
@@ -30,12 +35,20 @@ class ProductsModule extends VuexModule {
     return this.currentPage;
   }
 
-  get getProductInventories() {
+  get getProductInventories(): Array<IProduct> {
     return this.productInventories;
   }
 
-  get getProducts() {
+  get getProducts(): Array<IProduct> {
     return this.products;
+  }
+
+  get getInventoryFilterOption() {
+    return this.inventoryFilterOption;
+  }
+
+  get getFilteredInventories() {
+    return this.filteredInventories;
   }
 
   @Mutation
@@ -51,6 +64,30 @@ class ProductsModule extends VuexModule {
   @Mutation
   setProductInventories(products: IProduct[]) {
     this.productInventories = products;
+  }
+
+  @Mutation
+  setFilteredInventories(products: IProduct[]) {
+    this.filteredInventories = products;
+  }
+
+  @Mutation
+  setInventoryFilterOption(option: ISeacchInventoryOption) {
+    this.inventoryFilterOption = option;
+  }
+
+  @Action({ commit: "setFilteredInventories" })
+  async searchInventory(option: ISeacchInventoryOption): Promise<Array<IProduct>> {
+    if(!this.productInventories) return [];
+
+    const filtered = this.productInventories.filter(item => {
+      return Object.keys(option).every(key =>
+      {
+        return String(item[key]).toLowerCase().includes(option[key].toLowerCase());
+      }
+    )});
+    
+    return filtered.length > 0 ? filtered : [];
   }
   
   @Action({ commit: "setProducts" })

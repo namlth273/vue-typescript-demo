@@ -1,3 +1,32 @@
+html, body, #app-main {
+    height: 100%;
+    font-family: "Lato";
+}
+
+.content {
+  margin-top: 56px;
+  background: #F7F9FC;
+}
+
+.content-title {
+  font-size: 36px;
+  font-weight: 400;
+  color: #575962;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.content-detail {
+  background: #FFFFFF;
+}
+
+.content-detail-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #575962;
+}
+
 .ui-button {
     text-transform: unset;
     min-width: 0.5rem;

@@ -186,30 +186,11 @@
     display: none;
 }
 
-// .paging-arrow:hover:after
-// {
-//     content: '';
-//     display: inline-block;
-//     margin-top: 0.9rem;
-//     width: 1.2rem;
-//     height: 1.2rem;
-//     border-top: 0.15rem solid #4183D7;
-//     border-right: 0.15rem solid #4183D7;
-//     -moz-transform: rotate(45deg);
-//     -webkit-transform: rotate(45deg);
-//     transform: rotate(45deg);
-// }
-
-// .paging-arrow:hover:before
-// {
-//     content: '';
-//     display: inline-block;
-//     margin-top: 0.6rem;
-//     width: 1.2rem;
-//     height: 1.2rem;
-//     border-top: 0.15rem solid #4183D7;
-//     border-right: 0.15rem solid #4183D7;
-//     -moz-transform: rotate(45deg);
-//     -webkit-transform: rotate(45deg);
-//     transform: rotate(45deg);
-// }
+.input-with-progress {
+    .ui-progress-circular {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(-50%, 10%);
+    }
+}

@@ -21,6 +21,12 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/iotmodule",
+      name: "iotmodule",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./views/IoTModule.vue")
     }
   ]
 });

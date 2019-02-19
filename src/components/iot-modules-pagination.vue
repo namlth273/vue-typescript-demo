@@ -31,8 +31,8 @@ export default class IotModulesPagination extends Vue {
     }
 
     get getItemsCount() {
-        if (products.getProductInventories)
-            return products.getProductInventories.length;
+        if (products.getFilteredInventories)
+            return products.getFilteredInventories.length;
         else return 0;
     }
 

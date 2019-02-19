@@ -39,3 +39,14 @@ export interface IProductColor extends IEnumModel {
 export interface IProductSize extends IEnumModel {
     sizeType: number;
 }
+
+export interface IIotModule {
+    transaction: string;
+    name: string;
+    lastConnection: string;
+}
+
+export interface ISeacchInventoryOption {
+    name: string,
+    buyPrice: string
+}
