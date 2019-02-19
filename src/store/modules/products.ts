@@ -113,10 +113,10 @@ class ProductsModule extends VuexModule {
     }
   }
 
-  @Action
+  @Action({ commit: "setProductInventories" })
   async buyInventory(product: IBuyProductCommand) {
     await buy(product);
-    // return await getAllInventory();
+    return await getAllInventory();
   }
 
   @Action({ commit: "setProductInventories" })

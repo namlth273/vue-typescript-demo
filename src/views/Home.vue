@@ -341,31 +341,45 @@ export default class Home extends Vue {
 
   buyProductInventory(item: IProduct, index: number, button: Element) {
     this.isBuyBtnLoading = true;
-    products.buyInventory({
+    this.buyProductInventoryAsync(item).then(() => {
+      this.isBuyBtnLoading = false;
+      console.log("Buy Ok");
+    });
+  }
+
+  async buyProductInventoryAsync(item: IProduct) {
+    await products.buyInventory({
       productId: item.id,
       quantity: 1,
       buyPrice: item.buyPrice,
       sellPrice: item.sellPrice,
       productColorId: item.productColorId,
       productSizeId: item.productSizeId,
-    }).then((res) => {
-      console.log("Buy Ok");
-      this.isBuyBtnLoading = false;
     });
+
+    // await products.getAllInventory();
+    await products.searchInventory(this.filters);
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
     this.isSellBtnLoading = true;
 
-    products.sellInventory({
+    this.sellProductInventoryAsync(item).then((res) => {
+      this.isSellBtnLoading = false;
+      console.log("Sell Ok");
+    });
+  }
+
+  async sellProductInventoryAsync(item: IProduct) {
+    await products.sellInventory({
       productId: item.id,
       quantity: 1,
       productColorId: item.productColorId,
       productSizeId: item.productSizeId,
-    }).then((res) => {
-      console.log("Sell Ok");
-      this.isSellBtnLoading = false;
-    })
+    });
+
+    await products.getAllInventory();
+    await products.searchInventory(this.filters);
   }
 
   onQueryChangeProductSelection(query) {
