@@ -91,7 +91,7 @@
       </b-col>
     </b-row>
     <div class="d-flex flex-column mx-3">
-      <b-table striped hover :items="getProducts" :fields="productFields">
+      <b-table striped hover :items="getProducts" :fields="productFields" class="d-none">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
           <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
@@ -100,14 +100,22 @@
           </ui-button>
         </template>
       </b-table>
-      <b-table hover :items="getFilteredInventories" :fields="fields" :perPage="getItemsPerPage" :currentPage="getCurrentPage" :sort-by.sync="sortBy">
+      <b-table hover :items="getFilteredInventories"
+        :fields="fields"
+        :perPage="getItemsPerPage"
+        :currentPage="getCurrentPage"
+        :sort-by.sync="sortBy">
         <template slot="actions" slot-scope="row">
           <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <ui-button class="mx-2" color="primary" :loading="isBuyBtnLoading" @click.stop="buyProductInventory(row.item, row.index, $event.target)">
+          <ui-button class="mx-2" color="primary"
+            :loading="isBuyBtnLoading"
+            @click.stop="buyProductInventory(row.item, row.index, $event.target)">
             <!-- <v-icon name="plus" class="mr-2"/> -->
             Buy
           </ui-button>
-          <ui-button class="mx-2" color="primary" :loading="isSellBtnLoading" @click.stop="sellProductInventory(row.item, row.index, $event.target)">
+          <ui-button class="mx-2" color="primary"
+            :loading="isSellBtnLoading"
+            @click.stop="sellProductInventory(row.item, row.index, $event.target)">
             <!-- <v-icon name="dollar-sign" class="mr-2"/> -->
             Sell
           </ui-button>
@@ -221,13 +229,16 @@ export default class Home extends Vue {
       this.selectProductLoading = false;
     }, 1000);
 
-    this.filterNameInput = debounce((e) => {
-      this.isFilterNameLoading = true;
+    const filterNameDebounce = debounce((e) => {
       this.filters["name"] = e.target.value;
-      setTimeout(() => {
-        products.searchInventory(this.filters).then(() => this.isFilterNameLoading = false);
-      }, 1000);
+      products.searchInventory(this.filters)
+        .then(() => this.isFilterNameLoading = false);
     }, 1000);
+
+    this.filterNameInput = (e) => {
+      this.isFilterNameLoading = true;
+      filterNameDebounce(e);
+    }
   }
 
   mounted() {
@@ -340,7 +351,7 @@ export default class Home extends Vue {
     }).then((res) => {
       console.log("Buy Ok");
       this.isBuyBtnLoading = false;
-    })
+    });
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
