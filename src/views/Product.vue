@@ -3,7 +3,7 @@
         <b-row>
             <b-col md="6" offset="3">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="name" v-validate="'required|email'" v-model="product['name']" placeholder="Enter name..."/>
+                    <input type="text" class="form-control" name="name" v-validate="'required'" v-model="product['name']" placeholder="Enter name..."/>
                     <span class="text-left invalid-feedback" v-for="error in veeErrors.collect('name')" :key="error.id">{{ error }}</span>
                 </div>
             </b-col>
