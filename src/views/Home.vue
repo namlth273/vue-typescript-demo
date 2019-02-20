@@ -159,6 +159,7 @@ import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOpti
 import products from "@/store/modules/products";
 import colors from "@/store/modules/colors";
 import sizes from "@/store/modules/sizes";
+import apps from "@/store/modules/apps";
 import "keen-ui/src/bootstrap";
 import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
@@ -357,25 +358,35 @@ export default class Home extends Vue {
   }
 
   buyProduct(item: IProduct, index: number, button: Element) {
+    apps.setIsLoading(true);
     this.isBuyBtnLoading = true;
-    products.buy({
+    this.buyProductAsync(item).then((res) => {
+      console.log("Buy Ok");
+      this.isBuyBtnLoading = false;
+      apps.setIsLoading(false);
+    });
+  }
+
+  async buyProductAsync(item: IProduct) {
+    await products.buy({
       productId: item.id,
       quantity: 1,
       buyPrice: this.buyPrice,
       sellPrice: this.sellPrice,
       productColorId: this.getSelectedColor.id,
       productSizeId: this.getSelectedSize.id,
-    }).then((res) => {
-      console.log("Buy Ok");
-      this.isBuyBtnLoading = false;
-    })
+    });
+
+    await products.searchInventory(this.filters);
   }
 
   buyProductInventory(item: IProduct, index: number, button: Element) {
+    apps.setIsLoading(true);
     this.isBuyBtnLoading = true;
     this.buyProductInventoryAsync(item).then(() => {
-      this.isBuyBtnLoading = false;
       console.log("Buy Ok");
+      this.isBuyBtnLoading = false;
+      apps.setIsLoading(false);
     });
   }
 
@@ -393,11 +404,13 @@ export default class Home extends Vue {
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
+    apps.setIsLoading(true);
     this.isSellBtnLoading = true;
 
     this.sellProductInventoryAsync(item).then((res) => {
-      this.isSellBtnLoading = false;
       console.log("Sell Ok");
+      this.isSellBtnLoading = false;
+      apps.setIsLoading(false);
     });
   }
 
