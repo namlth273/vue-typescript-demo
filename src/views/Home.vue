@@ -91,43 +91,63 @@
 
       </b-col>
     </b-row>
-    <div class="d-flex flex-column mx-3">
-      <b-table striped hover :items="getProducts" :fields="productFields">
-        <template slot="actions" slot-scope="row">
-          <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
-            <!-- <v-icon name="plus" class="mr-2"/> -->
-            Buy
-          </ui-button>
-        </template>
-      </b-table>
-      <h2>{{getTotalItemsCount}}</h2>
-      <b-table hover :items="getFilteredInventories"
-        :fields="inventoryFields"
-        :perPage="getItemsPerPage"
-        :currentPage="getCurrentPage"
-        :sort-by.sync="sortBy">
-        <template slot="actions" slot-scope="row">
-          <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-          <ui-button class="mx-2" color="primary"
-            :loading="isBuyBtnLoading"
-            @click.stop="buyProductInventory(row.item, row.index, $event.target)">
-            <!-- <v-icon name="plus" class="mr-2"/> -->
-            Buy
-          </ui-button>
-          <ui-button class="mx-2" color="primary"
-            :loading="isSellBtnLoading"
-            @click.stop="sellProductInventory(row.item, row.index, $event.target)">
-            <!-- <v-icon name="dollar-sign" class="mr-2"/> -->
-            Sell
-          </ui-button>
-          <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
-              Sell
-          </button> -->
-        </template>
-      </b-table>
-      <IotModulesPagination></IotModulesPagination>
-    </div>
+    <h2>{{totalRows}}</h2>
+    <b-row>
+      <b-col>
+        <b-table striped hover :items="getProducts" :fields="productFields"
+          :perPage="perPage"
+          :currentPage="currentPage"
+        >
+          <template slot="actions" slot-scope="row">
+            <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
+            <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
+              <v-icon name="plus"/>
+            </ui-button>
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col class="d-flex justify-content-center">
+        <b-pagination
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+        />
+      </b-col>
+    </b-row>
+    <h2>{{getTotalItemsCount}}</h2>
+    <b-row>
+      <b-col>
+        <b-table hover :items="getFilteredInventories"
+          :fields="inventoryFields"
+          :perPage="getItemsPerPage"
+          :currentPage="getCurrentPage"
+          :sort-by.sync="sortBy">
+          <template slot="actions" slot-scope="row">
+            <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
+            <ui-button class="mx-2" color="primary"
+              :loading="isBuyBtnLoading"
+              @click.stop="buyProductInventory(row.item, row.index, $event.target)">
+              <v-icon name="plus"/>
+            </ui-button>
+            <ui-button class="mx-2" color="primary"
+              :loading="isSellBtnLoading"
+              @click.stop="sellProductInventory(row.item, row.index, $event.target)">
+              <v-icon name="dollar-sign"/>
+            </ui-button>
+            <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
+                Sell
+            </button> -->
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <IotModulesPagination></IotModulesPagination>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -168,6 +188,8 @@ export default class Home extends Vue {
   productsSelection: IProduct[] = [];
   buyPrice: number | null = null;
   sellPrice: number | null = null;
+  perPage: number = 3;
+  currentPage: number = 1;
   filters: ISeacchInventoryOption = {
     name: "",
     buyPrice: ""
@@ -238,6 +260,10 @@ export default class Home extends Vue {
   search(query: string) { return; }
 
   filterNameInput(query) { return; }
+
+  get totalRows() {
+    return products.getProducts.length;
+  }
 
   get getItemsPerPage() {
     return products.getItemsPerPage;

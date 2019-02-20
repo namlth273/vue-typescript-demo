@@ -3,7 +3,7 @@
         <b-row>
             <b-col md="6" offset="3">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="name" v-validate="'required'" v-model="product['name']" placeholder="Enter name..."/>
+                    <input type="text" class="form-control" name="name" v-validate="'required|email'" v-model="product['name']" placeholder="Enter name..."/>
                     <span class="text-left invalid-feedback" v-for="error in veeErrors.collect('name')" :key="error.id">{{ error }}</span>
                 </div>
             </b-col>
@@ -18,16 +18,19 @@
         </b-row>
         <b-row>
             <b-col>
-                <ui-button ref="btnAdd" color="primary"
-                    :loading="isBtnAddProductLoading"
-                    @click.stop="saveProduct">
-                    <v-icon name="plus" class="mr-2"/>
-                    {{btnAddText}}
-                </ui-button>
+                <div class="form-group">
+                    <ui-button ref="btnAdd" color="primary"
+                        :loading="isBtnAddProductLoading"
+                        @click.stop="saveProduct">
+                        <v-icon name="plus" class="mr-2"/>
+                        {{btnAddText}}
+                    </ui-button>
+                </div>
             </b-col>
         </b-row>
+        <h2>{{totalRows}}</h2>
         <b-row>
-            <b-col class="my-3">
+            <b-col class="">
                 <b-table striped hover :items="getProducts" :fields="productFields"
                     :perPage="perPage"
                     :currentPage="currentPage"
@@ -42,7 +45,7 @@
             </b-col>
         </b-row>
         <b-row>
-            <b-col class="d-flex justify-content-center align-items-center">
+            <b-col class="d-flex justify-content-center">
                 <b-pagination
                     :total-rows="totalRows"
                     :per-page="perPage"
@@ -74,7 +77,7 @@ export default class Product extends Vue {
     productFields = [
         { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
         { key: "description", label: "Description", sortable: true, "class": "text-center" },
-        { key: "actions", label: "Actions" }
+        { key: "actions", label: "" }
     ];
 
     get getProducts() {
