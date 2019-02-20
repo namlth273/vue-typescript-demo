@@ -1,5 +1,5 @@
 import { baseApi } from "@/store/api";
-import { IProduct, ISellProductCommand, IBuyProductCommand } from "../models";
+import { IProduct, ISellProductCommand, IBuyProductCommand, ISaveProduct } from "../models";
 
 export async function getAll(): Promise<IProduct[]> {
     const response = await baseApi.post("/product/getall");
@@ -19,6 +19,12 @@ export async function buy(product: IBuyProductCommand): Promise<void> {
 
 export async function sell(product: ISellProductCommand): Promise<void> {
     await baseApi.post("/productinventory/sell",
+        product
+    );
+}
+
+export async function save(product: ISaveProduct): Promise<void> {
+    await baseApi.post("/product/save",
         product
     );
 }

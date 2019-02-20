@@ -10,23 +10,23 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "inventory",
       component: Home
     },
     {
-      path: "/about",
-      name: "about",
+      path: "/product",
+      name: "product",
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+        import(/* webpackChunkName: "product" */ "./views/Product.vue")
     },
     {
       path: "/iotmodule",
       name: "iotmodule",
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/IoTModule.vue")
+        import(/* webpackChunkName: "iot-module" */ "./views/IoTModule.vue")
     }
   ]
 });

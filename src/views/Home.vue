@@ -103,7 +103,7 @@
       </b-table>
       <h2>{{getTotalItemsCount}}</h2>
       <b-table hover :items="getFilteredInventories"
-        :fields="fields"
+        :fields="inventoryFields"
         :perPage="getItemsPerPage"
         :currentPage="getCurrentPage"
         :sort-by.sync="sortBy">
@@ -186,7 +186,7 @@ export default class Home extends Vue {
     { key: "actions", label: "Actions" }
   ];
 
-  fields = [
+  inventoryFields = [
     { key: "name", label: "Name", sortable: true },
     { key: "description", label: "Description", sortable: true, "class": "text-center" },
     { key: "quantity", label: "Quantity", sortable: true },
@@ -264,7 +264,7 @@ export default class Home extends Vue {
   }
 
   get getSortOptions() {
-    return this.fields
+    return this.inventoryFields
       .filter(f => f.sortable)
       .map(f => {
         return { text: f.label, value: f.key }

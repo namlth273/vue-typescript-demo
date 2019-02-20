@@ -7,8 +7,8 @@ import {
     MutationAction,
   } from "vuex-module-decorators";
 import store from "@/store";
-import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption } from "@/store/models";
-import { getAll, buy, sell, getAllInventory } from "./product-api";
+import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption, ISaveProduct } from "@/store/models";
+import { getAll, buy, sell, getAllInventory, save } from "./product-api";
   
 @Module({
   namespaced: true,
@@ -123,6 +123,12 @@ class ProductsModule extends VuexModule {
   async sellInventory(product: ISellProductCommand) {
     await sell(product);
     return await getAllInventory();
+  }
+
+  @Action({ commit: "setProducts" })
+  async saveProduct(product: ISaveProduct) {
+    await save(product);
+    return await getAll();
   }
 }
 

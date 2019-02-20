@@ -11,6 +11,12 @@ export interface IProduct{
     productSizeId: Guid;
 }
 
+export interface ISaveProduct {
+    id: Guid | null;
+    name: string;
+    description: string;
+}
+
 export interface IEnumModel {
     id: Guid;
     description: string;

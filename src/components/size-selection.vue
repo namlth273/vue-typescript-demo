@@ -29,6 +29,13 @@ export default class SizeSelection extends Vue {
         sizes.SETSELECTEDSIZE(newValue);
     }
 
+    // onChanged(query) {
+    //     console.log(query.id);
+    //     if (query.length === 0) {
+    //         return;
+    //     }
+    // }
+
     get getSizes(): Array<IProductSize> {
         return sizes.getSizes;
     }

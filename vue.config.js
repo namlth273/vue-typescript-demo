@@ -7,7 +7,7 @@ module.exports = {
         },
         proxy: 'http://localhost:11872',
         // proxy: 'https://namlth-demo-api.azurewebsites.net/',
-        port: 9000
+        port: 9001
     },
 
     configureWebpack: {
