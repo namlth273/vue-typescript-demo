@@ -14,7 +14,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import UiSelect from "keen-ui/src/UiSelect.vue";
 import { IProduct, IEnumModel, IProductColor, IProductSize } from "@/store/models";
-import colors from "@/store/modules/colors";
+import colors from "@/store/modules/color";
 
 @Component({
     components: {

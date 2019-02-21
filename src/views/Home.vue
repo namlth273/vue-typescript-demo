@@ -156,9 +156,10 @@ import { Guid } from "guid-typescript";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import IotModulesPagination from "@/components/iot-modules-pagination.vue";
 import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
-import products from "@/store/modules/products";
-import colors from "@/store/modules/colors";
-import sizes from "@/store/modules/sizes";
+import products from "@/store/modules/product";
+import inventories from "@/store/modules/inventory";
+import colors from "@/store/modules/color";
+import sizes from "@/store/modules/size";
 import "keen-ui/src/bootstrap";
 import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
@@ -235,7 +236,7 @@ export default class Home extends Vue {
 
     const filterNameDebounce = debounce((e) => {
       this.filters["name"] = e.target.value;
-      products.searchInventory(this.filters)
+      inventories.searchInventory(this.filters)
         .then(() => this.isFilterNameLoading = false);
     }, 1000);
 
@@ -250,10 +251,9 @@ export default class Home extends Vue {
       sizes.getAll();
       colors.getAll();
       products.getAll();
-      products.getAllInventory().then((res) => {
-        products.searchInventory(this.filters);
+      inventories.getAllInventory().then((res) => {
+        inventories.searchInventory(this.filters);
       });
-      // this.productsSelection = this.getProductInventories;
     });
   }
 
@@ -266,15 +266,15 @@ export default class Home extends Vue {
   }
 
   get getItemsPerPage() {
-    return products.getItemsPerPage;
+    return inventories.getItemsPerPage;
   }
 
   get getCurrentPage() {
-    return products.getCurrentPage;
+    return inventories.getCurrentPage;
   }
 
   get getTotalItemsCount() {
-    return products.getFilteredInventories.length;
+    return inventories.getFilteredInventories.length;
   }
 
   get getSelectedColor() {
@@ -286,7 +286,7 @@ export default class Home extends Vue {
   }
 
   get getInventoryFilterOption() {
-    return products.getInventoryFilterOption;
+    return inventories.getInventoryFilterOption;
   }
 
   get getSortOptions() {
@@ -328,7 +328,7 @@ export default class Home extends Vue {
   }
 
   get getFilteredInventories(): Array<IProduct> {
-    return products.getFilteredInventories;
+    return inventories.getFilteredInventories;
     // const filtered = this.getProductInventories.filter(item => {
     //   return Object.keys(this.filters).every(key =>
     //   {
@@ -339,7 +339,7 @@ export default class Home extends Vue {
   }
 
   get getProductInventories(): Array<IProduct> {
-    const result = products.getProductInventories;
+    const result = inventories.getProductInventories;
 
     if(!result) {
       return new Array<IProduct>();
@@ -365,7 +365,7 @@ export default class Home extends Vue {
   }
 
   async buyProductAsync(item: IProduct) {
-    await products.buy({
+    await inventories.buyInventory({
       productId: item.id,
       quantity: 1,
       buyPrice: this.buyPrice,
@@ -374,7 +374,7 @@ export default class Home extends Vue {
       productSizeId: this.getSelectedSize.id,
     });
 
-    await products.searchInventory(this.filters);
+    await inventories.searchInventory(this.filters);
   }
 
   buyProductInventory(item: IProduct, index: number, button: Element) {
@@ -386,7 +386,7 @@ export default class Home extends Vue {
   }
 
   async buyProductInventoryAsync(item: IProduct) {
-    await products.buyInventory({
+    await inventories.buyInventory({
       productId: item.id,
       quantity: 1,
       buyPrice: item.buyPrice,
@@ -395,7 +395,7 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     });
 
-    await products.searchInventory(this.filters);
+    await inventories.searchInventory(this.filters);
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
@@ -408,14 +408,14 @@ export default class Home extends Vue {
   }
 
   async sellProductInventoryAsync(item: IProduct) {
-    await products.sellInventory({
+    await inventories.sellInventory({
       productId: item.id,
       quantity: 1,
       productColorId: item.productColorId,
       productSizeId: item.productSizeId,
     });
 
-    await products.searchInventory(this.filters);
+    await inventories.searchInventory(this.filters);
   }
 
   onQueryChangeProductSelection(query) {

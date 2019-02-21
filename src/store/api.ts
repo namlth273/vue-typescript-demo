@@ -6,12 +6,24 @@ export const baseApi = axios.create({
     // baseURL: "https://namlth-demo-api.azurewebsites.net/api"
 });
 
-baseApi.interceptors.request.use((config) => {
-    apps.setIsLoading(true);
-    return config;
-});
+baseApi.interceptors.request.use(
+    (config) => {
+        apps.setIsLoading(true);
+        return config;
+    },
+    // (error) => {
+    //     apps.setIsLoading(false);
+    //     return Promise.reject(error);
+    // }
+);
 
-baseApi.interceptors.response.use((config) => {
-    apps.setIsLoading(false);
-    return config;
-});
+baseApi.interceptors.response.use(
+    (config) => {
+        apps.setIsLoading(false);
+        return config;
+    },
+    // (error) => {
+    //     apps.setIsLoading(false);
+    //     return Promise.reject(error);
+    // }
+);

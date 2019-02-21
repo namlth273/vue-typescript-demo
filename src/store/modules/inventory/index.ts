@@ -1,23 +1,15 @@
-import {
-    VuexModule,
-    Module,
-    getModule,
-    Mutation,
-    Action,
-    MutationAction,
-  } from "vuex-module-decorators";
+import { VuexModule, Module, getModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
+import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption } from "@/store/models";
 import store from "@/store";
-import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption, ISaveProduct } from "@/store/models";
-import { getAll, buy, sell, getAllInventory, save } from "./product-api";
+import { buy, sell, getAllInventory } from "@/store/apis/product-api";
   
 @Module({
   namespaced: true,
-  name: "products",
+  name: "product-inventory-store",
   store,
   dynamic: true,
 })
-class ProductsModule extends VuexModule {
-  products: Array<IProduct> = new Array<IProduct>();
+class ProductInventoryModule extends VuexModule {
   productInventories: Array<IProduct> = new Array<IProduct>();
   filteredInventories: Array<IProduct> = new Array<IProduct>();
   inventoryFilterOption: ISeacchInventoryOption = {
@@ -39,10 +31,6 @@ class ProductsModule extends VuexModule {
     return this.productInventories;
   }
 
-  get getProducts(): Array<IProduct> {
-    return this.products;
-  }
-
   get getInventoryFilterOption() {
     return this.inventoryFilterOption;
   }
@@ -52,13 +40,13 @@ class ProductsModule extends VuexModule {
   }
 
   @Mutation
-  setCurrentPage(page: number) {
-    this.currentPage = page;
+  setCurrentPage(value: number) {
+    this.currentPage = value;
   }
 
   @Mutation
-  setProducts(products: IProduct[]) {
-    this.products = products;
+  setItemPerPage(value: number) {
+    this.itemsPerPage = value;
   }
 
   @Mutation
@@ -89,12 +77,6 @@ class ProductsModule extends VuexModule {
     
     return filtered.length > 0 ? filtered : [];
   }
-  
-  @Action({ commit: "setProducts" })
-  async getAll() {
-    const products = await getAll();
-    return products;
-  }
 
   @Action({ commit: "setProductInventories" })
   async getAllInventory() {
@@ -102,13 +84,11 @@ class ProductsModule extends VuexModule {
     return products;
   }
 
-  @MutationAction({ mutate: ["products", "productInventories"] })
+  @MutationAction({ mutate: ["productInventories"] })
   async buy(product: IBuyProductCommand) {
     await buy(product);
     const invetories = await getAllInventory();
-    const prods = await getAll();
     return {
-      products: prods,
       productInventories: invetories
     }
   }
@@ -124,12 +104,6 @@ class ProductsModule extends VuexModule {
     await sell(product);
     return await getAllInventory();
   }
-
-  @Action({ commit: "setProducts" })
-  async saveProduct(product: ISaveProduct) {
-    await save(product);
-    return await getAll();
-  }
 }
 
-export default getModule(ProductsModule);
+export default getModule(ProductInventoryModule);

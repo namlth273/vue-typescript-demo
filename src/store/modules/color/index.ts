@@ -7,7 +7,7 @@ import {
   } from "vuex-module-decorators";
 import store from "@/store";
 import { IProductColor } from "@/store/models";
-import { getAll } from "./color-api";
+import { getAll } from "@/store/apis/color-api";
   
 @Module({
   namespaced: true,

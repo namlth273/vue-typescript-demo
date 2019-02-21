@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IProduct, ISaveProduct } from "@/store/models";
-import products from "@/store/modules/products";
+import products from "@/store/modules/product";
 import UiButton from "keen-ui/src/UiButton.vue";
 
 @Component({

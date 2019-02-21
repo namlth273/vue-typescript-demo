@@ -2,7 +2,7 @@ import Vue from "vue";
 // import "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import store from "@/store";
 import "bootstrap/scss/bootstrap.scss";
 import "bootstrap-vue/src/index.scss";
 // import "@fortawesome/fontawesome-free/scss/solid.scss";

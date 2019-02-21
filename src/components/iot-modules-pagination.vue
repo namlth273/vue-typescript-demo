@@ -16,23 +16,23 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import products from "@/store/modules/products";
+import inventories from "@/store/modules/inventory";
 
 @Component
 export default class IotModulesPagination extends Vue {
     currentPage: number = 1;
 
     get getCurrentPage() {
-        return products.getCurrentPage;
+        return inventories.getCurrentPage;
     }
 
     get getItemsPerPage() {
-        return products.getItemsPerPage;
+        return inventories.getItemsPerPage;
     }
 
     get getItemsCount() {
-        if (products.getFilteredInventories)
-            return products.getFilteredInventories.length;
+        if (inventories.getFilteredInventories)
+            return inventories.getFilteredInventories.length;
         else return 0;
     }
 
@@ -41,7 +41,7 @@ export default class IotModulesPagination extends Vue {
     }
 
     onPageChange(pageNumber) {
-        products.setCurrentPage(pageNumber);
+        inventories.setCurrentPage(pageNumber);
     }
 }
 </script>

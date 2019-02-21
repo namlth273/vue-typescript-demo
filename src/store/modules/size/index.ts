@@ -7,7 +7,7 @@ import {
   } from "vuex-module-decorators";
 import store from "@/store";
 import { IProductSize } from "@/store/models";
-import { getAll } from "./size-api";
+import { getAll } from "@/store/apis/size-api";
   
 @Module({
   namespaced: true,

@@ -54,7 +54,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IProduct, IEnumModel, IProductColor, IProductSize } from "@/store/models";
-import products from "@/store/modules/products";
+import products from "@/store/modules/product";
 import { IIotModule } from "@/store/models";
 
 @Component
