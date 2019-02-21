@@ -116,6 +116,22 @@
         />
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <ui-button color="primary" v-b-modal.modal2>
+          Filter Columns
+        </ui-button>
+        <b-modal id="modal2" title="Filter Columns" lazy>
+          <b-container fluid>
+            <b-row>
+              <b-col>
+                <FilterOption></FilterOption>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-modal>
+      </b-col>
+    </b-row>
     <h2>{{getTotalItemsCount}}</h2>
     <b-row>
       <b-col>
@@ -152,10 +168,11 @@
 </template>
 
 <script lang="ts">
-import { Guid } from "guid-typescript";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import IotModulesPagination from "@/components/iot-modules-pagination.vue";
 import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
+import IotModulesPagination from "@/components/iot-modules-pagination.vue";
+import FilterOption from "@/components/filter-option.vue";
+import { Guid } from "guid-typescript";
 import products from "@/store/modules/product";
 import inventories from "@/store/modules/inventory";
 import colors from "@/store/modules/color";
@@ -172,6 +189,7 @@ import "@/scss/home.scss";
 @Component({
   components: {
     IotModulesPagination,
+    FilterOption,
     ColorSelection,
     SizeSelection,
     UiButton,
