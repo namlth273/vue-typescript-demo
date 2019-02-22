@@ -118,10 +118,16 @@
     </b-row>
     <b-row>
       <b-col>
-        <ui-button color="primary" v-b-modal.modal2>
+        <!-- <ui-button color="primary">
           Filter Columns
         </ui-button>
-        <b-modal id="modal2" title="Filter Columns" lazy>
+        <ui-modal ref="filterModal" title="Basic Modal">
+          Hello World! What's happening?
+        </ui-modal> -->
+        <ui-button color="primary" v-b-modal.modal2 class="mb-3">
+            Filter Columns
+        </ui-button>
+        <b-modal id="modal2" title="Filter Columns" size="xl" lazy>
           <b-container fluid>
             <b-row>
               <b-col>
@@ -132,6 +138,7 @@
         </b-modal>
       </b-col>
     </b-row>
+    <FilterOption></FilterOption>
     <h2>{{getTotalItemsCount}}</h2>
     <b-row>
       <b-col>
@@ -171,7 +178,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
 import IotModulesPagination from "@/components/iot-modules-pagination.vue";
-import FilterOption from "@/components/filter-option.vue";
+import FilterOption from "@/components/filterOption/filter-option.vue";
 import { Guid } from "guid-typescript";
 import products from "@/store/modules/product";
 import inventories from "@/store/modules/inventory";
@@ -180,6 +187,7 @@ import sizes from "@/store/modules/size";
 import "keen-ui/src/bootstrap";
 import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
+import UiModal from "keen-ui/src/UiModal.vue";
 import UiProgressCircular from "keen-ui/src/UiProgressCircular.vue";
 import { debounce } from "ts-debounce";
 import ColorSelection from "@/components/color-selection.vue";
@@ -194,6 +202,7 @@ import "@/scss/home.scss";
     SizeSelection,
     UiButton,
     UiSelect,
+    UiModal,
     UiProgressCircular
   }
 })

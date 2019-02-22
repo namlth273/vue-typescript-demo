@@ -1,5 +1,10 @@
 import { Guid } from "guid-typescript";
 
+export interface ISelectOption {
+    text: string;
+    value: any;
+}
+
 export interface IProduct{
     id: Guid;
     name: string;
@@ -55,4 +60,40 @@ export interface IIotModule {
 export interface ISeacchInventoryOption {
     name: string,
     buyPrice: string
+}
+
+export interface IDynamicFilterField {
+    [key: string] : ISelectOption[],
+}
+
+export interface IDynamicFilterOption {
+    id: Guid;
+    fields: IDynamicFilterField;
+    selectedField: string | null;
+    selectedFilter: any;
+    comparingValue: any;
+}
+
+export interface IFilterOption {
+    id: Guid;
+    name: string;
+    fieldName: string;
+    method: Function;
+    defaultValue: any;
+}
+
+export interface IBaseFilterService {
+    id: Guid;
+    name: string,
+    fieldName: string | null;
+    defaultValue: any;
+    createFilter(): IFilterOption;
+}
+
+export interface IDictionary<TKey, T> {
+    add(key: TKey, value: T): void;
+    remove(key: TKey): void;
+    containsKey(key: TKey): boolean;
+    keys(): TKey[];
+    values(): T[];
 }

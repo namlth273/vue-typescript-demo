@@ -11,6 +11,7 @@ import "bootstrap-vue/src/index.scss";
 import "vue-awesome/icons/plus";
 import "vue-awesome/icons/dollar-sign";
 import "vue-awesome/icons/pen";
+import "vue-awesome/icons/times";
 import Icon from "vue-awesome/components/Icon.vue";
 // import BootstrapVue from "bootstrap-vue";
 import BLayout from "bootstrap-vue/src/components/layout";
