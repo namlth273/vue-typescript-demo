@@ -5,12 +5,20 @@
                 <b-form-row>
                     <b-col>
                         <div class="form-group">
-                            <b-form-select v-model="model.selectedField">
+                            <!-- <b-form-select v-model="model.selectedField">
                                 <option :value="null" selected>Select field...</option>
                                 <option class="" v-for="(option_obj, option) in model.fields"
                                     :key="option"
                                     :value="option">
                                 {{option}}
+                                </option>
+                            </b-form-select> -->
+                            <b-form-select v-model="model.selectedField">
+                                <option :value="null" selected>Select field...</option>
+                                <option class="" v-for="option in filterFields"
+                                    :key="option.value"
+                                    :value="option.value">
+                                {{option.text}}
                                 </option>
                             </b-form-select>
                         </div>
@@ -61,7 +69,6 @@
                 </ui-button>
             </b-col>
         </b-row>
-        {{getInventories.length}}
     </div>
 </template>
 
@@ -71,7 +78,8 @@ import { Guid } from "guid-typescript";
 import * as services from "./services";
 import inventories from "@/store/modules/inventory";
 import UiButton from "keen-ui/src/UiButton.vue";
-import { IDynamicFilterOption, IDynamicFilterField, IFilterOption, IBaseFilterService, ISelectOption, IDictionary } from "@/store/models";
+import { IDynamicFilterOption, IDynamicFilterField, IFilterOption, IBaseFilterService,
+    ISelectOption, IDictionary } from "@/store/models";
 import { IProduct } from "@/store/models";
 
 @Component({
@@ -80,6 +88,24 @@ import { IProduct } from "@/store/models";
     }
 })
 export default class FilterOption extends Vue {
+    mounted() {
+        this.addMoreFilterOption();
+    }
+
+    filterFields: ISelectOption[] = [
+        {
+            text: "Name",
+            value: services.EnumFilterField.Name
+        },
+        {
+            text: "Description",
+            value: services.EnumFilterField.Description
+        },
+        {
+            text: "Quantity",
+            value: services.EnumFilterField.Quantity
+        },
+    ]
     filterFactory: services.DynamicFilterFactory = new services.DynamicFilterFactory();
     dynamicFilterOptions: IDynamicFilterOption[] = [];
     allFilters: IFilterOption[] = [];
@@ -89,44 +115,61 @@ export default class FilterOption extends Vue {
     }
 
     get getInventories() {
-        if (this.allFilters.length == 0) return inventories.getProductInventories;
+        // if (this.allFilters.length == 0) return inventories.getProductInventories;
 
-        var filteredResult = inventories.getProductInventories.filter(item => {
-            return this.allFilters.every(filter => {
-                var result = filter.method(item, filter.fieldName, filter.defaultValue);
-                // console.log("Run filter "
-                //     + filter.name + "... | item: "
-                //     + JSON.stringify(item[filter.fieldName])
-                //     + " | compareValue: "
-                //     + filter.defaultValue
-                //     + " | result: " + result);
+        // var filteredResult = inventories.getProductInventories.filter(item => {
+        //     return this.allFilters.every(filter => {
+        //         var result = filter.method(item, filter.fieldName, filter.defaultValue);
+        //         // console.log("Run filter "
+        //         //     + filter.name + "... | item: "
+        //         //     + JSON.stringify(item[filter.fieldName])
+        //         //     + " | compareValue: "
+        //         //     + filter.defaultValue
+        //         //     + " | result: " + result);
 
-                return result;
-            });
-        });
+        //         return result;
+        //     });
+        // });
 
-        // console.log(JSON.stringify(filteredResult));
-        return filteredResult;
+        // // console.log(JSON.stringify(filteredResult));
+        // return filteredResult;
+        return inventories.filteredInventories;
     }
     
     addMoreFilterOption() {
+        var fields: IDynamicFilterField = {};
+        fields[services.EnumFilterField.Name] = [
+            { text: "Equal to", value: services.EnumFilterService.EqualsTo },
+            { text: "Not equal", value: services.EnumFilterService.NotEquals },
+            { text: "Begins with", value: services.EnumFilterService.BeginsWith },
+            { text: "Contains", value: services.EnumFilterService.Contains },
+        ];
+        fields[services.EnumFilterField.Description] = [
+            { text: "Contains", value: services.EnumFilterService.Contains },
+        ];
+        fields[services.EnumFilterField.Quantity] = [
+            { text: "Greater than", value: services.EnumFilterService.GreaterThan },
+            { text: "Less than", value: services.EnumFilterService.LessThan }
+        ];
+
         this.dynamicFilterOptions.push({
             id: Guid.create(),
-            fields: {
-                "name": [
-                            { text: "Equal to", value: services.EnumFilterService.EqualsTo },
-                            { text: "Not equal", value: services.EnumFilterService.NotEquals },
-                            { text: "Begins with", value: services.EnumFilterService.BeginsWith },
-                            { text: "Contains", value: services.EnumFilterService.Contains },
-                        ],
-                "description":  [
-                                    { text: "Contains", value: services.EnumFilterService.Contains },
-                                ],
-                "quantity": [
-                                { text: "Greater than", value: services.EnumFilterService.GreaterThan },
-                                { text: "Less than", value: services.EnumFilterService.LessThan }
-                            ]
-            },
+            fields: fields,
+            // fields: {
+            //     "name": [
+            //                 { text: "Equal to", value: services.EnumFilterService.EqualsTo },
+            //                 { text: "Not equal", value: services.EnumFilterService.NotEquals },
+            //                 { text: "Begins with", value: services.EnumFilterService.BeginsWith },
+            //                 { text: "Contains", value: services.EnumFilterService.Contains },
+            //             ],
+            //     "description":  [
+            //                         { text: "Contains", value: services.EnumFilterService.Contains },
+            //                     ],
+            //     "quantity": [
+            //                     { text: "Greater than", value: services.EnumFilterService.GreaterThan },
+            //                     { text: "Less than", value: services.EnumFilterService.LessThan }
+            //                 ]
+            // },
             selectedField: null,
             selectedFilter: null,
             comparingValue: null
@@ -138,6 +181,10 @@ export default class FilterOption extends Vue {
     }
 
     testClick() {
+        if (this.dynamicFilterOptions.length == 0) {
+            this.allFilters = [];
+        }
+        
         this.dynamicFilterOptions.forEach(filterItem => {
             var strategy = this.filterFactory.strategies[filterItem.selectedFilter] as IBaseFilterService;
             strategy.id = filterItem.id;
@@ -152,7 +199,8 @@ export default class FilterOption extends Vue {
 
             this.allFilters.push(createdFilter);
         });
+
+        inventories.searchInventoryDynamic(this.allFilters);
     }
 }
-
 </script>

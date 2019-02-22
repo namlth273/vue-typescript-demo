@@ -185,3 +185,9 @@ export enum EnumFilterService {
     GreaterThan,
     LessThan
 }
+
+export enum EnumFilterField {
+    Name = "name",
+    Description = "description",
+    Quantity = "quantity"
+}

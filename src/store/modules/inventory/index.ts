@@ -1,6 +1,7 @@
 import { VuexModule, Module, getModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
-import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption } from "@/store/models";
 import store from "@/store";
+import { IProduct, IBuyProductCommand, ISellProductCommand, ISeacchInventoryOption, IFilterOption } from "@/store/models";
+import { DynamicFilterFactory } from "@/components/filterOption/services";
 import { buy, sell, getAllInventory } from "@/store/apis/product-api";
   
 @Module({
@@ -10,6 +11,7 @@ import { buy, sell, getAllInventory } from "@/store/apis/product-api";
   dynamic: true,
 })
 class ProductInventoryModule extends VuexModule {
+  filterFactory: DynamicFilterFactory = new DynamicFilterFactory();
   productInventories: Array<IProduct> = new Array<IProduct>();
   filteredInventories: Array<IProduct> = new Array<IProduct>();
   inventoryFilterOption: ISeacchInventoryOption = {
@@ -64,6 +66,26 @@ class ProductInventoryModule extends VuexModule {
     this.inventoryFilterOption = option;
   }
 
+  @Action({ commit: "setFilteredInventories" })
+  async searchInventoryDynamic(dynamicFilters: IFilterOption[]) {
+    if (dynamicFilters.length == 0)
+      return this.productInventories;
+
+    return this.productInventories.filter(item => {
+      return dynamicFilters.every(filter => {
+        var result = filter.method(item, filter.fieldName, filter.defaultValue);
+        // console.log("Run filter "
+        //     + filter.name + "... | item: "
+        //     + JSON.stringify(item[filter.fieldName])
+        //     + " | compareValue: "
+        //     + filter.defaultValue
+        //     + " | result: " + result);
+
+        return result;
+      });
+    });
+  }
+  
   @Action({ commit: "setFilteredInventories" })
   async searchInventory(option: ISeacchInventoryOption): Promise<Array<IProduct>> {
     if(!this.productInventories) return [];
