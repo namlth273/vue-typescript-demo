@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ui-preloader :show="getIsLoading"></ui-preloader>
+    <ui-preloader :show="getIsLoading" class="sticky-top"></ui-preloader>
     <div id="nav">
       <router-link to="/">Inventory</router-link> |
       <router-link to="/product">Product</router-link>
