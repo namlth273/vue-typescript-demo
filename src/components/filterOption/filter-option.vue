@@ -200,7 +200,8 @@ export default class FilterOption extends Vue {
             this.allFilters.push(createdFilter);
         });
 
-        inventories.searchInventoryDynamic(this.allFilters);
+        inventories.setDynamicFilters(this.allFilters);
+        inventories.searchInventoryDynamic();
     }
 }
 </script>

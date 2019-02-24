@@ -375,7 +375,8 @@ export default class Home extends Vue {
       productSizeId: this.getSelectedSize.id,
     });
 
-    await inventories.searchInventory(this.filters);
+    // await inventories.searchInventory(this.filters);
+    await inventories.searchInventoryDynamic();
   }
 
   buyProductInventory(item: IProduct, index: number, button: Element) {
@@ -396,7 +397,8 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     });
 
-    await inventories.searchInventory(this.filters);
+    // await inventories.searchInventory(this.filters);
+    await inventories.searchInventoryDynamic();
   }
 
   sellProductInventory(item: IProduct, index: number, button: Element) {
@@ -416,7 +418,8 @@ export default class Home extends Vue {
       productSizeId: item.productSizeId,
     });
 
-    await inventories.searchInventory(this.filters);
+    // await inventories.searchInventory(this.filters);
+    await inventories.searchInventoryDynamic();
   }
 
   onQueryChangeProductSelection(query) {

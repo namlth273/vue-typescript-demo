@@ -14,6 +14,7 @@ class ProductInventoryModule extends VuexModule {
   filterFactory: DynamicFilterFactory = new DynamicFilterFactory();
   productInventories: Array<IProduct> = new Array<IProduct>();
   filteredInventories: Array<IProduct> = new Array<IProduct>();
+  dynamicFilters: IFilterOption[] = [];
   inventoryFilterOption: ISeacchInventoryOption = {
     name: "",
     buyPrice: ""
@@ -66,13 +67,18 @@ class ProductInventoryModule extends VuexModule {
     this.inventoryFilterOption = option;
   }
 
+  @Mutation
+  setDynamicFilters(filters: IFilterOption[]) {
+    this.dynamicFilters = filters;
+  }
+
   @Action({ commit: "setFilteredInventories" })
-  async searchInventoryDynamic(dynamicFilters: IFilterOption[]) {
-    if (dynamicFilters.length == 0)
+  async searchInventoryDynamic() {
+    if (this.dynamicFilters.length == 0)
       return this.productInventories;
 
     return this.productInventories.filter(item => {
-      return dynamicFilters.every(filter => {
+      return this.dynamicFilters.every(filter => {
         var result = filter.method(item, filter.fieldName, filter.defaultValue);
         // console.log("Run filter "
         //     + filter.name + "... | item: "
