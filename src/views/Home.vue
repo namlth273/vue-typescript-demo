@@ -316,34 +316,16 @@ export default class Home extends Vue {
       });
   }
 
-  get getColors(): Array<IEnumModel> {
-    const result = colors.getColors;
-
-    if(!result) {
-      return new Array<IEnumModel>();
-    }
-
-    return result;
+  get getColors(): Array<IProductColor> {
+    return colors.getColors;
   }
 
-  get getSizes(): Array<IEnumModel> {
-    const result = sizes.getSizes;
-
-    if(!result) {
-      return new Array<IEnumModel>();
-    }
-
-    return result;
+  get getSizes(): Array<IProductSize> {
+    return sizes.getSizes;
   }
 
   get getProducts(): Array<IProduct> {
-    const result = products.getProducts;
-
-    if(!result) {
-      return new Array<IProduct>();
-    }
-
-    return result;
+    return products.getProducts;
   }
 
   get getFilteredInventories(): Array<IProduct> {
