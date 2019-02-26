@@ -185,7 +185,7 @@ export class DateGreaterThanFilterService implements IBaseFilterService {
             name: this.name,
             fieldName: this.fieldName,
             method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
-                return moment((item[fieldName])).isBefore(defaultValue, "day");
+                return moment((item[fieldName])).isAfter(defaultValue, "day");
             },
             defaultValue: this.defaultValue
         }
@@ -204,7 +204,7 @@ export class DateLessThanFilterService implements IBaseFilterService {
             name: this.name,
             fieldName: this.fieldName,
             method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
-                return moment((item[fieldName])).isAfter(defaultValue, "day");
+                return moment((item[fieldName])).isBefore(defaultValue, "day");
             },
             defaultValue: this.defaultValue
         }
