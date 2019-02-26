@@ -173,6 +173,44 @@ export class DateEqualsToFilterService implements IBaseFilterService {
     }
 }
 
+export class DateGreaterThanFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date greater than";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
+                return moment((item[fieldName])).isBefore(defaultValue, "day");
+            },
+            defaultValue: this.defaultValue
+        }
+    }
+}
+
+export class DateLessThanFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date less than";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
+                return moment((item[fieldName])).isAfter(defaultValue, "day");
+            },
+            defaultValue: this.defaultValue
+        }
+    }
+}
+
 export class Dictionary<TKey extends any, T> implements IDictionary<TKey, T> {
     _keys: TKey[] = [];
     _values: T[] = [];
@@ -235,6 +273,8 @@ export class DynamicFilterFactory {
         this.strategies.add(EnumFilterService.EqualsToChecked, new EqualsToCheckedFilterService());
         this.strategies.add(EnumFilterService.NotEqualsToChecked, new NotEqualsToCheckedFilterService());
         this.strategies.add(EnumFilterService.DateEqualsTo, new DateEqualsToFilterService());
+        this.strategies.add(EnumFilterService.DateGreaterThan, new DateGreaterThanFilterService());
+        this.strategies.add(EnumFilterService.DateLessThan, new DateLessThanFilterService());
     }
 }
 
@@ -247,7 +287,9 @@ export enum EnumFilterService {
     LessThan,
     EqualsToChecked,
     NotEqualsToChecked,
-    DateEqualsTo
+    DateEqualsTo,
+    DateGreaterThan,
+    DateLessThan
 }
 
 export enum EnumFilterField {
