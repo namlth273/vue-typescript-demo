@@ -2,9 +2,8 @@
     <div>
         <b-form-row v-for="(model, index) in getDynamicFilterOptions" :key="model.id.toString()">
             <b-col sm="11">
-                <b-form-row>
+                <b-form-row class="mb-3">
                     <b-col>
-                        <div class="form-group">
                             <!-- <b-form-select v-model="model.selectedField">
                                 <option :value="null" selected>Select field...</option>
                                 <option class="" v-for="(option_obj, option) in model.fields"
@@ -21,10 +20,8 @@
                                 {{option.text}}
                                 </option>
                             </b-form-select>
-                        </div>
                     </b-col>
                     <b-col>
-                        <div class="form-group">
                             <b-form-select v-model="model.selectedFilter">
                                 <option :value="null" selected>Select filter...</option>
                                 <option class="" v-for="option in model.fields[model.selectedField]"
@@ -33,12 +30,14 @@
                                 {{option.text}}
                                 </option>
                             </b-form-select>
-                        </div>
                     </b-col>
-                    <b-col>
-                        <div class="form-group">
-                            <b-input v-model="model.comparingValue"/>
-                        </div>
+                    <b-col class="d-flex justify-content-center align-items-center">
+                        <b-input v-model="model.comparingValue" v-if="model.thirdColumnFieldType[model.selectedField] == 0"/>
+                        <ui-checkbox :value="true" disabled class="mb-0" v-if="model.thirdColumnFieldType[model.selectedField] == 1"></ui-checkbox>
+                        <ui-datepicker class="form-control"
+                            v-model="model.comparingValue"
+                            v-if="model.thirdColumnFieldType[model.selectedField] == 2"
+                        ></ui-datepicker>
                     </b-col>
                 </b-form-row>
             </b-col>
@@ -78,13 +77,17 @@ import { Guid } from "guid-typescript";
 import * as services from "./services";
 import inventories from "@/store/modules/inventory";
 import UiButton from "keen-ui/src/UiButton.vue";
+import UiCheckbox from "keen-ui/src/UiCheckbox.vue";
+import UiDatepicker from "keen-ui/src/UiDatepicker.vue";
 import { IDynamicFilterOption, IDynamicFilterField, IFilterOption, IBaseFilterService,
-    ISelectOption, IDictionary } from "@/store/models";
+    ISelectOption, IDictionary, IDynamicThirdColumnFieldType } from "@/store/models";
 import { IProduct } from "@/store/models";
 
 @Component({
     components: {
-        UiButton
+        UiButton,
+        UiCheckbox,
+        UiDatepicker
     }
 })
 export default class FilterOption extends Vue {
@@ -105,6 +108,14 @@ export default class FilterOption extends Vue {
             text: "Quantity",
             value: services.EnumFilterField.Quantity
         },
+        {
+            text: "Status",
+            value: services.EnumFilterField.IsDeleted
+        },
+        {
+            text: "Created Date",
+            value: services.EnumFilterField.CreatedDate
+        }
     ]
     filterFactory: services.DynamicFilterFactory = new services.DynamicFilterFactory();
     dynamicFilterOptions: IDynamicFilterOption[] = [];
@@ -151,6 +162,20 @@ export default class FilterOption extends Vue {
             { text: "Greater than", value: services.EnumFilterService.GreaterThan },
             { text: "Less than", value: services.EnumFilterService.LessThan }
         ];
+        fields[services.EnumFilterField.IsDeleted] = [
+            { text: "Equal to", value: services.EnumFilterService.EqualsToChecked },
+            { text: "Not equal", value: services.EnumFilterService.NotEqualsToChecked }
+        ];
+        fields[services.EnumFilterField.CreatedDate] = [
+            { text: "Equal to", value: services.EnumFilterService.DateEqualsTo },
+        ];
+
+        var thirdColumnFieldType: IDynamicThirdColumnFieldType = {};
+        thirdColumnFieldType[services.EnumFilterField.Name] = services.EnumThirdColumnFieldType.Text;
+        thirdColumnFieldType[services.EnumFilterField.Description] = services.EnumThirdColumnFieldType.Text;
+        thirdColumnFieldType[services.EnumFilterField.Quantity] = services.EnumThirdColumnFieldType.Text;
+        thirdColumnFieldType[services.EnumFilterField.IsDeleted] = services.EnumThirdColumnFieldType.Checked;
+        thirdColumnFieldType[services.EnumFilterField.CreatedDate] = services.EnumThirdColumnFieldType.Date;
 
         this.dynamicFilterOptions.push({
             id: Guid.create(),
@@ -170,6 +195,7 @@ export default class FilterOption extends Vue {
             //                     { text: "Less than", value: services.EnumFilterService.LessThan }
             //                 ]
             // },
+            thirdColumnFieldType: thirdColumnFieldType,
             selectedField: null,
             selectedFilter: null,
             comparingValue: null

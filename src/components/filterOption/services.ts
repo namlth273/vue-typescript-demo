@@ -1,5 +1,6 @@
 import { IBaseFilterService, IFilterOption, IProduct, IDictionary } from "@/store/models";
 import { Guid } from "guid-typescript";
+import moment from "moment";
 
 export class EqualsToFilterService implements IBaseFilterService {
     id: Guid = Guid.createEmpty();
@@ -115,6 +116,63 @@ export class LessThanFilterService implements IBaseFilterService {
     }
 }
 
+export class EqualsToCheckedFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Equals to checked";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
+                return Boolean(item[fieldName]) == true;
+            },
+            defaultValue: this.defaultValue
+        }
+    }
+}
+
+export class NotEqualsToCheckedFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Not equals to checked";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
+                return Boolean(item[fieldName]) == false;
+            },
+            defaultValue: this.defaultValue
+        }
+    }
+}
+
+export class DateEqualsToFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date equals to";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
+                return moment((item[fieldName])).isSame(defaultValue, "day");
+            },
+            defaultValue: this.defaultValue
+        }
+    }
+}
+
 export class Dictionary<TKey extends any, T> implements IDictionary<TKey, T> {
     _keys: TKey[] = [];
     _values: T[] = [];
@@ -174,6 +232,9 @@ export class DynamicFilterFactory {
         this.strategies.add(EnumFilterService.Contains, new ContainsFilterService());
         this.strategies.add(EnumFilterService.GreaterThan, new GreaterThanFilterService());
         this.strategies.add(EnumFilterService.LessThan, new LessThanFilterService());
+        this.strategies.add(EnumFilterService.EqualsToChecked, new EqualsToCheckedFilterService());
+        this.strategies.add(EnumFilterService.NotEqualsToChecked, new NotEqualsToCheckedFilterService());
+        this.strategies.add(EnumFilterService.DateEqualsTo, new DateEqualsToFilterService());
     }
 }
 
@@ -183,11 +244,22 @@ export enum EnumFilterService {
     BeginsWith,
     Contains,
     GreaterThan,
-    LessThan
+    LessThan,
+    EqualsToChecked,
+    NotEqualsToChecked,
+    DateEqualsTo
 }
 
 export enum EnumFilterField {
     Name = "name",
     Description = "description",
-    Quantity = "quantity"
+    Quantity = "quantity",
+    IsDeleted = "isDeleted",
+    CreatedDate = "createdDate"
+}
+
+export enum EnumThirdColumnFieldType {
+    Text,
+    Checked,
+    Date
 }

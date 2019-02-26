@@ -1,4 +1,5 @@
 import { Guid } from "guid-typescript";
+import { EnumThirdColumnFieldType } from "@/components/filterOption/services";
 
 export interface ISelectOption {
     text: string;
@@ -66,9 +67,14 @@ export interface IDynamicFilterField {
     [key: string] : ISelectOption[],
 }
 
+export interface IDynamicThirdColumnFieldType {
+    [key: string] : EnumThirdColumnFieldType,
+}
+
 export interface IDynamicFilterOption {
     id: Guid;
     fields: IDynamicFilterField;
+    thirdColumnFieldType: IDynamicThirdColumnFieldType;
     selectedField: string | null;
     selectedFilter: any;
     comparingValue: any;

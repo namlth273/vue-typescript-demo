@@ -141,6 +141,16 @@
           :perPage="getItemsPerPage"
           :currentPage="getCurrentPage"
           :sort-by.sync="sortBy">
+          <template slot="isDeleted" slot-scope="row">
+            <div class="d-flex justify-content-center">
+              <ui-checkbox v-model="row.item.isDeleted" disabled></ui-checkbox>
+            </div>
+          </template>
+          <template slot="createdDate" slot-scope="row">
+            <div class="d-flex justify-content-center">
+              <span>{{row.item.createdDate | formatDate}}</span>
+            </div>
+          </template>
           <template slot="actions" slot-scope="row">
             <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
             <ui-button class="mx-2" color="primary"
@@ -181,10 +191,12 @@ import sizes from "@/store/modules/size";
 import "keen-ui/src/bootstrap";
 import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
+import UiCheckbox from "keen-ui/src/UiCheckbox.vue";
 import UiProgressCircular from "keen-ui/src/UiProgressCircular.vue";
 import { debounce } from "ts-debounce";
 import ColorSelection from "@/components/color-selection.vue";
 import SizeSelection from "@/components/size-selection.vue";
+import moment from "moment";
 import "@/scss/home.scss";
 
 @Component({
@@ -195,7 +207,14 @@ import "@/scss/home.scss";
     SizeSelection,
     UiButton,
     UiSelect,
+    UiCheckbox,
     UiProgressCircular
+  },
+  filters: {
+    formatDate: (value): string => {
+      if (!value) return "";
+      return moment.utc(value).local().format("MM/DD/YYYY HH:MM:SS");
+    }
   }
 })
 export default class Home extends Vue {
@@ -236,6 +255,8 @@ export default class Home extends Vue {
     { key: "size", label: "Size" },
     { key: "buyPrice", label: "Buy Price" },
     { key: "sellPrice", label: "Sell Price" },
+    { key: "isDeleted", label: "Is Deleted" },
+    { key: "createdDate", label: "Created Date" },
     { key: "actions", label: "Actions" }
   ];
 
