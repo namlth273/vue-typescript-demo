@@ -1,4 +1,4 @@
-import { IBaseFilterService, IFilterOption, IProduct, IDictionary } from "@/store/models";
+import { IBaseFilterService, IFilterOption, IProduct, IDictionary, IDynamicFilterField, IDynamicThirdColumnFieldType } from "@/store/models";
 import { Guid } from "guid-typescript";
 import moment from "moment";
 
@@ -275,6 +275,47 @@ export class DynamicFilterFactory {
         this.strategies.add(EnumFilterService.DateEqualsTo, new DateEqualsToFilterService());
         this.strategies.add(EnumFilterService.DateGreaterThan, new DateGreaterThanFilterService());
         this.strategies.add(EnumFilterService.DateLessThan, new DateLessThanFilterService());
+    }
+
+    create2ndFieldOptions(): IDynamicFilterField {
+        var fields: IDynamicFilterField = {};
+
+        fields[EnumFilterField.Name] = [
+            { text: "Equal to", value: EnumFilterService.EqualsTo },
+            { text: "Not equal", value: EnumFilterService.NotEquals },
+            { text: "Begins with", value: EnumFilterService.BeginsWith },
+            { text: "Contains", value: EnumFilterService.Contains },
+        ];
+        fields[EnumFilterField.Description] = [
+            { text: "Contains", value: EnumFilterService.Contains },
+        ];
+        fields[EnumFilterField.Quantity] = [
+            { text: "Greater than", value: EnumFilterService.GreaterThan },
+            { text: "Less than", value: EnumFilterService.LessThan }
+        ];
+        fields[EnumFilterField.IsDeleted] = [
+            { text: "Equal to", value: EnumFilterService.EqualsToChecked },
+            { text: "Not equal", value: EnumFilterService.NotEqualsToChecked }
+        ];
+        fields[EnumFilterField.CreatedDate] = [
+            { text: "Equal to", value: EnumFilterService.DateEqualsTo },
+            { text: "Greater than", value: EnumFilterService.DateGreaterThan },
+            { text: "Less than", value: EnumFilterService.DateLessThan }
+        ];
+
+        return fields;
+    }
+
+    create3rdFieldOption(): IDynamicThirdColumnFieldType {
+        var fields: IDynamicThirdColumnFieldType = {};
+        
+        fields[EnumFilterField.Name] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.Description] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.Quantity] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.IsDeleted] = EnumThirdColumnFieldType.Checked;
+        fields[EnumFilterField.CreatedDate] = EnumThirdColumnFieldType.Date;
+
+        return fields;
     }
 }
 

@@ -128,78 +128,14 @@ export default class FilterOption extends Vue {
     }
 
     get getInventories() {
-        // if (this.allFilters.length == 0) return inventories.getProductInventories;
-
-        // var filteredResult = inventories.getProductInventories.filter(item => {
-        //     return this.allFilters.every(filter => {
-        //         var result = filter.method(item, filter.fieldName, filter.defaultValue);
-        //         // console.log("Run filter "
-        //         //     + filter.name + "... | item: "
-        //         //     + JSON.stringify(item[filter.fieldName])
-        //         //     + " | compareValue: "
-        //         //     + filter.defaultValue
-        //         //     + " | result: " + result);
-
-        //         return result;
-        //     });
-        // });
-
-        // // console.log(JSON.stringify(filteredResult));
-        // return filteredResult;
         return inventories.filteredInventories;
     }
     
     addMoreFilterOption() {
-        var fields: IDynamicFilterField = {};
-        fields[services.EnumFilterField.Name] = [
-            { text: "Equal to", value: services.EnumFilterService.EqualsTo },
-            { text: "Not equal", value: services.EnumFilterService.NotEquals },
-            { text: "Begins with", value: services.EnumFilterService.BeginsWith },
-            { text: "Contains", value: services.EnumFilterService.Contains },
-        ];
-        fields[services.EnumFilterField.Description] = [
-            { text: "Contains", value: services.EnumFilterService.Contains },
-        ];
-        fields[services.EnumFilterField.Quantity] = [
-            { text: "Greater than", value: services.EnumFilterService.GreaterThan },
-            { text: "Less than", value: services.EnumFilterService.LessThan }
-        ];
-        fields[services.EnumFilterField.IsDeleted] = [
-            { text: "Equal to", value: services.EnumFilterService.EqualsToChecked },
-            { text: "Not equal", value: services.EnumFilterService.NotEqualsToChecked }
-        ];
-        fields[services.EnumFilterField.CreatedDate] = [
-            { text: "Equal to", value: services.EnumFilterService.DateEqualsTo },
-            { text: "Greater than", value: services.EnumFilterService.DateGreaterThan },
-            { text: "Less than", value: services.EnumFilterService.DateLessThan }
-        ];
-
-        var thirdColumnFieldType: IDynamicThirdColumnFieldType = {};
-        thirdColumnFieldType[services.EnumFilterField.Name] = services.EnumThirdColumnFieldType.Text;
-        thirdColumnFieldType[services.EnumFilterField.Description] = services.EnumThirdColumnFieldType.Text;
-        thirdColumnFieldType[services.EnumFilterField.Quantity] = services.EnumThirdColumnFieldType.Text;
-        thirdColumnFieldType[services.EnumFilterField.IsDeleted] = services.EnumThirdColumnFieldType.Checked;
-        thirdColumnFieldType[services.EnumFilterField.CreatedDate] = services.EnumThirdColumnFieldType.Date;
-
         this.dynamicFilterOptions.push({
             id: Guid.create(),
-            fields: fields,
-            // fields: {
-            //     "name": [
-            //                 { text: "Equal to", value: services.EnumFilterService.EqualsTo },
-            //                 { text: "Not equal", value: services.EnumFilterService.NotEquals },
-            //                 { text: "Begins with", value: services.EnumFilterService.BeginsWith },
-            //                 { text: "Contains", value: services.EnumFilterService.Contains },
-            //             ],
-            //     "description":  [
-            //                         { text: "Contains", value: services.EnumFilterService.Contains },
-            //                     ],
-            //     "quantity": [
-            //                     { text: "Greater than", value: services.EnumFilterService.GreaterThan },
-            //                     { text: "Less than", value: services.EnumFilterService.LessThan }
-            //                 ]
-            // },
-            thirdColumnFieldType: thirdColumnFieldType,
+            fields: this.filterFactory.create2ndFieldOptions(),
+            thirdColumnFieldType: this.filterFactory.create3rdFieldOption(),
             selectedField: null,
             selectedFilter: null,
             comparingValue: null
