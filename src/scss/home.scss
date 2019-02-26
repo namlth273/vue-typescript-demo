@@ -135,7 +135,7 @@
     content: '';
     display: inline-block;
     margin-top: 0.3rem;
-    margin-left: -0.05rem;
+    margin-left: 0.2rem;
     width: 0.75rem;
     height: 0.75rem;
     border-top: 0.15rem solid #333;
@@ -152,7 +152,7 @@
     content: '';
     display: inline-block;
     margin-top: 0.3rem;
-    margin-left: -0.35rem;
+    margin-left: -0.1rem;
     width: 0.75rem;
     height: 0.75rem;
     border-top: 0.15rem solid #333;
@@ -175,7 +175,7 @@
 }
 
 .paging-arrow.single:after {
-    margin-left: -0.1rem;
+    margin-left: 0.025rem;
 }
 
 .paging-arrow.back.single:after {
