@@ -1,5 +1,6 @@
-import { IBaseFilterService, IFilterOption, IProduct, IDictionary } from "@/store/models";
+import { IBaseFilterService, IFilterOption, IProduct, IDictionary, IDynamicFilterField, IDynamicThirdColumnFieldType } from "@/store/models";
 import { Guid } from "guid-typescript";
+import moment from "moment";
 
 export class EqualsToFilterService implements IBaseFilterService {
     id: Guid = Guid.createEmpty();
@@ -12,10 +13,10 @@ export class EqualsToFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase() == defaultValue.toLowerCase();
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase() == this.defaultValue.toLowerCase();
+            }
         }
     }
 }
@@ -31,10 +32,10 @@ export class NotEqualsToFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase() != defaultValue.toLowerCase();
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase() != this.defaultValue.toLowerCase();
+            }
         }
     }
 }
@@ -50,10 +51,10 @@ export class ContainsFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase().includes(defaultValue.toLowerCase());
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase().includes(this.defaultValue.toLowerCase());
+            }
         }
     }
 }
@@ -69,10 +70,10 @@ export class BeginsWithFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase().startsWith(defaultValue.toLowerCase());
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase().startsWith(this.defaultValue.toLowerCase());
+            }
         }
     }
 }
@@ -88,10 +89,10 @@ export class GreaterThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: number): boolean => {
-                return Number(item[fieldName]) > defaultValue;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Number(item[this.fieldName]) > this.defaultValue;
+            }
         }
     }
 }
@@ -107,10 +108,105 @@ export class LessThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: number): boolean => {
-                return Number(item[fieldName]) < defaultValue;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Number(item[this.fieldName]) < this.defaultValue;
+            }
+        }
+    }
+}
+
+export class EqualsToCheckedFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Equals to checked";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Boolean(item[this.fieldName]) == true;
+            }
+        }
+    }
+}
+
+export class NotEqualsToCheckedFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Not equals to checked";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Boolean(item[this.fieldName]) == false;
+            }
+        }
+    }
+}
+
+export class DateEqualsToFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date equals to";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isSame(this.defaultValue, "day");
+            }
+        }
+    }
+}
+
+export class DateGreaterThanFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date greater than";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isAfter(this.defaultValue, "day");
+            }
+        }
+    }
+}
+
+export class DateLessThanFilterService implements IBaseFilterService {
+    id: Guid = Guid.createEmpty();
+    name: string = "Date less than";
+    fieldName: string = "";
+    defaultValue: any;
+
+    createFilter(): IFilterOption {
+        return {
+            id: this.id,
+            name: this.name,
+            fieldName: this.fieldName,
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isBefore(this.defaultValue, "day");
+            }
         }
     }
 }
@@ -174,6 +270,52 @@ export class DynamicFilterFactory {
         this.strategies.add(EnumFilterService.Contains, new ContainsFilterService());
         this.strategies.add(EnumFilterService.GreaterThan, new GreaterThanFilterService());
         this.strategies.add(EnumFilterService.LessThan, new LessThanFilterService());
+        this.strategies.add(EnumFilterService.EqualsToChecked, new EqualsToCheckedFilterService());
+        this.strategies.add(EnumFilterService.NotEqualsToChecked, new NotEqualsToCheckedFilterService());
+        this.strategies.add(EnumFilterService.DateEqualsTo, new DateEqualsToFilterService());
+        this.strategies.add(EnumFilterService.DateGreaterThan, new DateGreaterThanFilterService());
+        this.strategies.add(EnumFilterService.DateLessThan, new DateLessThanFilterService());
+    }
+
+    create2ndFieldOptions(): IDynamicFilterField {
+        var fields: IDynamicFilterField = {};
+
+        fields[EnumFilterField.Name] = [
+            { text: "Equal to", value: EnumFilterService.EqualsTo },
+            { text: "Not equal", value: EnumFilterService.NotEquals },
+            { text: "Begins with", value: EnumFilterService.BeginsWith },
+            { text: "Contains", value: EnumFilterService.Contains },
+        ];
+        fields[EnumFilterField.Description] = [
+            { text: "Contains", value: EnumFilterService.Contains },
+        ];
+        fields[EnumFilterField.Quantity] = [
+            { text: "Greater than", value: EnumFilterService.GreaterThan },
+            { text: "Less than", value: EnumFilterService.LessThan }
+        ];
+        fields[EnumFilterField.IsDeleted] = [
+            { text: "Equal to", value: EnumFilterService.EqualsToChecked },
+            { text: "Not equal", value: EnumFilterService.NotEqualsToChecked }
+        ];
+        fields[EnumFilterField.CreatedDate] = [
+            { text: "Equal to", value: EnumFilterService.DateEqualsTo },
+            { text: "Greater than", value: EnumFilterService.DateGreaterThan },
+            { text: "Less than", value: EnumFilterService.DateLessThan }
+        ];
+
+        return fields;
+    }
+
+    create3rdFieldOptions(): IDynamicThirdColumnFieldType {
+        var fields: IDynamicThirdColumnFieldType = {};
+
+        fields[EnumFilterField.Name] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.Description] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.Quantity] = EnumThirdColumnFieldType.Text;
+        fields[EnumFilterField.IsDeleted] = EnumThirdColumnFieldType.Checked;
+        fields[EnumFilterField.CreatedDate] = EnumThirdColumnFieldType.Date;
+
+        return fields;
     }
 }
 
@@ -183,11 +325,24 @@ export enum EnumFilterService {
     BeginsWith,
     Contains,
     GreaterThan,
-    LessThan
+    LessThan,
+    EqualsToChecked,
+    NotEqualsToChecked,
+    DateEqualsTo,
+    DateGreaterThan,
+    DateLessThan
 }
 
 export enum EnumFilterField {
     Name = "name",
     Description = "description",
-    Quantity = "quantity"
+    Quantity = "quantity",
+    IsDeleted = "isDeleted",
+    CreatedDate = "createdDate"
+}
+
+export enum EnumThirdColumnFieldType {
+    Text,
+    Checked,
+    Date
 }
