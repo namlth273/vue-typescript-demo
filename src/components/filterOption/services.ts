@@ -13,10 +13,10 @@ export class EqualsToFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase() == defaultValue.toLowerCase();
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase() == this.defaultValue.toLowerCase();
+            }
         }
     }
 }
@@ -32,10 +32,10 @@ export class NotEqualsToFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase() != defaultValue.toLowerCase();
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase() != this.defaultValue.toLowerCase();
+            }
         }
     }
 }
@@ -51,10 +51,10 @@ export class ContainsFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase().includes(defaultValue.toLowerCase());
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase().includes(this.defaultValue.toLowerCase());
+            }
         }
     }
 }
@@ -70,10 +70,10 @@ export class BeginsWithFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return String(item[fieldName]).toLowerCase().startsWith(defaultValue.toLowerCase());
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return String(item[this.fieldName]).toLowerCase().startsWith(this.defaultValue.toLowerCase());
+            }
         }
     }
 }
@@ -89,10 +89,10 @@ export class GreaterThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: number): boolean => {
-                return Number(item[fieldName]) > defaultValue;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Number(item[this.fieldName]) > this.defaultValue;
+            }
         }
     }
 }
@@ -108,10 +108,10 @@ export class LessThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: number): boolean => {
-                return Number(item[fieldName]) < defaultValue;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Number(item[this.fieldName]) < this.defaultValue;
+            }
         }
     }
 }
@@ -127,10 +127,10 @@ export class EqualsToCheckedFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return Boolean(item[fieldName]) == true;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Boolean(item[this.fieldName]) == true;
+            }
         }
     }
 }
@@ -146,10 +146,10 @@ export class NotEqualsToCheckedFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: string): boolean => {
-                return Boolean(item[fieldName]) == false;
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return Boolean(item[this.fieldName]) == false;
+            }
         }
     }
 }
@@ -165,10 +165,10 @@ export class DateEqualsToFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
-                return moment((item[fieldName])).isSame(defaultValue, "day");
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isSame(this.defaultValue, "day");
+            }
         }
     }
 }
@@ -184,10 +184,10 @@ export class DateGreaterThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
-                return moment((item[fieldName])).isAfter(defaultValue, "day");
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isAfter(this.defaultValue, "day");
+            }
         }
     }
 }
@@ -203,10 +203,10 @@ export class DateLessThanFilterService implements IBaseFilterService {
             id: this.id,
             name: this.name,
             fieldName: this.fieldName,
-            method: (item: IProduct, fieldName: string, defaultValue: Date): boolean => {
-                return moment((item[fieldName])).isBefore(defaultValue, "day");
-            },
-            defaultValue: this.defaultValue
+            defaultValue: this.defaultValue,
+            method: (item: IProduct): boolean => {
+                return moment((item[this.fieldName])).isBefore(this.defaultValue, "day");
+            }
         }
     }
 }

@@ -79,7 +79,7 @@ class ProductInventoryModule extends VuexModule {
 
     return this.productInventories.filter(item => {
       return this.dynamicFilters.every(filter => {
-        var result = filter.method(item, filter.fieldName, filter.defaultValue);
+        var result = filter.method(item);
         // console.log("Run filter "
         //     + filter.name + "... | item: "
         //     + JSON.stringify(item[filter.fieldName])

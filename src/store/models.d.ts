@@ -84,7 +84,7 @@ export interface IFilterOption {
     id: Guid;
     name: string;
     fieldName: string;
-    method: Function;
+    method: (item: IProduct) => boolean;
     defaultValue: any;
 }
 

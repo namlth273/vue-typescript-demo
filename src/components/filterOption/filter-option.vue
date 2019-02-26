@@ -211,9 +211,7 @@ export default class FilterOption extends Vue {
     }
 
     applyFilters() {
-        if (this.dynamicFilterOptions.length == 0) {
-            this.allFilters = [];
-        }
+        this.allFilters = [];
         
         this.dynamicFilterOptions.forEach(filterItem => {
             var strategy = this.filterFactory.strategies[filterItem.selectedFilter] as IBaseFilterService;
@@ -235,6 +233,7 @@ export default class FilterOption extends Vue {
 
         inventories.setDynamicFilters(this.allFilters);
         inventories.searchInventoryDynamic();
+        inventories.setCurrentPage(1);
     }
 }
 </script>
