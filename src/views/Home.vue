@@ -97,6 +97,7 @@
         <b-table striped hover :items="getProducts" :fields="productFields"
           :perPage="perPage"
           :currentPage="currentPage"
+          responsive
         >
           <template slot="actions" slot-scope="row">
             <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
@@ -140,7 +141,9 @@
           :fields="inventoryFields"
           :perPage="getItemsPerPage"
           :currentPage="getCurrentPage"
-          :sort-by.sync="sortBy">
+          :sort-by.sync="sortBy"
+          responsive
+        >
           <template slot="isDeleted" slot-scope="row">
             <div class="d-flex justify-content-center">
               <ui-checkbox v-model="row.item.isDeleted" disabled></ui-checkbox>
@@ -152,20 +155,22 @@
             </div>
           </template>
           <template slot="actions" slot-scope="row">
-            <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
-            <ui-button class="mx-2" color="primary"
-              :loading="isBuyBtnLoading"
-              @click.stop="buyProductInventory(row.item, row.index, $event.target)">
-              <v-icon name="plus"/>
-            </ui-button>
-            <ui-button class="mx-2" color="primary"
-              :loading="isSellBtnLoading"
-              @click.stop="sellProductInventory(row.item, row.index, $event.target)">
-              <v-icon name="dollar-sign"/>
-            </ui-button>
-            <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
-                Sell
-            </button> -->
+            <div class="d-flex no-wrap justitfy-content-center align-items-center">
+              <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
+              <ui-button class="mx-2" color="primary"
+                :loading="isBuyBtnLoading"
+                @click.stop="buyProductInventory(row.item, row.index, $event.target)">
+                <v-icon name="plus"/>
+              </ui-button>
+              <ui-button class="mx-2" color="primary"
+                :loading="isSellBtnLoading"
+                @click.stop="sellProductInventory(row.item, row.index, $event.target)">
+                <v-icon name="dollar-sign"/>
+              </ui-button>
+              <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
+                  Sell
+              </button> -->
+            </div>
           </template>
         </b-table>
       </b-col>
@@ -244,7 +249,7 @@ export default class Home extends Vue {
   productFields = [
     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
     { key: "description", label: "Description", sortable: true, "class": "text-center" },
-    { key: "actions", label: "Actions" }
+    { key: "actions", label: "Buy" }
   ];
 
   inventoryFields = [
@@ -257,7 +262,7 @@ export default class Home extends Vue {
     { key: "sellPrice", label: "Sell Price" },
     { key: "isDeleted", label: "Is Deleted" },
     { key: "createdDate", label: "Created Date" },
-    { key: "actions", label: "Actions" }
+    { key: "actions", label: "Buy/Sell", "class": "d-flex justify-content-center align-items-center flex-column" }
   ];
 
   created() {

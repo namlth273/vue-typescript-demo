@@ -135,7 +135,7 @@ export default class FilterOption extends Vue {
         this.dynamicFilterOptions.push({
             id: Guid.create(),
             fields: this.filterFactory.create2ndFieldOptions(),
-            thirdColumnFieldType: this.filterFactory.create3rdFieldOption(),
+            thirdColumnFieldType: this.filterFactory.create3rdFieldOptions(),
             selectedField: null,
             selectedFilter: null,
             comparingValue: null
@@ -150,20 +150,27 @@ export default class FilterOption extends Vue {
         this.allFilters = [];
         
         this.dynamicFilterOptions.forEach(filterItem => {
-            var strategy = this.filterFactory.strategies[filterItem.selectedFilter] as IBaseFilterService;
+            if (!filterItem.comparingValue) return;
             
-            strategy.id = filterItem.id;
-            strategy.fieldName = filterItem.selectedField;
-            strategy.defaultValue = filterItem.comparingValue;
-
-            var createdFilter = strategy.createFilter();
-
+            // Check if filter already existed then remove
             var findExistedFilter = this.allFilters.filter(item => item.id == filterItem.id);
             
             if (findExistedFilter && findExistedFilter.length > 0) {
                 this.allFilters.splice(this.allFilters.indexOf(findExistedFilter[0]), 1);
             }
 
+            // Get the service to create filter
+            var strategy = this.filterFactory.strategies[filterItem.selectedFilter] as IBaseFilterService;
+            
+            // Set required properties
+            strategy.id = filterItem.id;
+            strategy.fieldName = filterItem.selectedField;
+            strategy.defaultValue = filterItem.comparingValue;
+
+            // Create filter
+            var createdFilter = strategy.createFilter();
+
+            // Push to array
             this.allFilters.push(createdFilter);
         });
 

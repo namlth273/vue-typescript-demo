@@ -306,9 +306,9 @@ export class DynamicFilterFactory {
         return fields;
     }
 
-    create3rdFieldOption(): IDynamicThirdColumnFieldType {
+    create3rdFieldOptions(): IDynamicThirdColumnFieldType {
         var fields: IDynamicThirdColumnFieldType = {};
-        
+
         fields[EnumFilterField.Name] = EnumThirdColumnFieldType.Text;
         fields[EnumFilterField.Description] = EnumThirdColumnFieldType.Text;
         fields[EnumFilterField.Quantity] = EnumThirdColumnFieldType.Text;
