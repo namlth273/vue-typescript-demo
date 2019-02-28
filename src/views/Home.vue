@@ -126,14 +126,14 @@
           <b-container fluid>
             <b-row>
               <b-col>
-                <FilterOption></FilterOption>
+                <filter-option></filter-option>
               </b-col>
             </b-row>
           </b-container>
         </b-modal>
       </b-col>
     </b-row>
-    <FilterOption></FilterOption>
+    <filter-option></filter-option>
     <h2>{{getTotalItemsCount}}</h2>
     <b-row>
       <b-col>
@@ -185,10 +185,13 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import { Guid } from "guid-typescript";
+import { debounce } from "ts-debounce";
+import moment from "moment";
+import { getModule } from "vuex-module-decorators";
 import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
 import IotModulesPagination from "@/components/iot-modules-pagination.vue";
-import FilterOption from "@/components/filterOption/filter-option.vue";
-import { Guid } from "guid-typescript";
+import FilterOption from "@/components/filterOption/index.vue";
 import products from "@/store/modules/product";
 import inventories from "@/store/modules/inventory";
 import colors from "@/store/modules/color";
@@ -198,10 +201,8 @@ import UiButton from "keen-ui/src/UiButton.vue";
 import UiSelect from "keen-ui/src/UiSelect.vue";
 import UiCheckbox from "keen-ui/src/UiCheckbox.vue";
 import UiProgressCircular from "keen-ui/src/UiProgressCircular.vue";
-import { debounce } from "ts-debounce";
 import ColorSelection from "@/components/color-selection.vue";
 import SizeSelection from "@/components/size-selection.vue";
-import moment from "moment";
 import "@/scss/home.scss";
 
 @Component({

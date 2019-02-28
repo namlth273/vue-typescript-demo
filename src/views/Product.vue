@@ -68,6 +68,12 @@ import UiButton from "keen-ui/src/UiButton.vue";
     }
 })
 export default class Product extends Vue {
+    mounted() {
+        this.$nextTick(() => {
+            products.getAll();
+        });
+    }
+
     btnAddText: string = "Add";
     isBtnAddProductLoading = false;
     product: ISaveProduct = {} as ISaveProduct;
