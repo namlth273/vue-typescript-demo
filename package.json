@@ -22,6 +22,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.12",
+    "buefy": "^0.7.3",
     "guid-typescript": "^1.0.9",
     "keen-ui": "^1.0.2",
     "moment": "^2.24.0",

@@ -27,6 +27,12 @@ export default new Router({
       name: "iotmodule",
       component: () =>
         import(/* webpackChunkName: "iot-module" */ "./views/IoTModule.vue")
-    }
+    },
+    {
+      path: "/about",
+      name: "about",
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
   ]
 });

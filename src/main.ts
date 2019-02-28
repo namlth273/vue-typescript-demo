@@ -22,6 +22,7 @@ import BFormInput from "bootstrap-vue/src/components/form-input";
 import BPagination from "bootstrap-vue/src/components/pagination";
 import BFormSelect from "bootstrap-vue/src/components/form-select";
 import VeeValidate from "vee-validate";
+// import Buefy from "buefy";
 import "@/scss/main.scss";
 
 // import "keen-ui/src/styles/imports.scss";
@@ -53,6 +54,7 @@ Vue.use(BFormInput);
 Vue.use(BPagination);
 Vue.use(BFormSelect);
 Vue.use(VeeValidate, config);
+// Vue.use(Buefy);
 // Vue.use(BootstrapVue);
 Vue.component("v-icon", Icon);
 
