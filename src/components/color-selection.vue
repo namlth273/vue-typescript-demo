@@ -1,5 +1,6 @@
 <template>
-    <ui-select
+    <div></div>
+    <!-- <ui-select
         has-search
         floatingLabel
         label="Color"
@@ -7,18 +8,16 @@
         :keys="{ label: 'description', value: 'id' }"
         :options="getColors"
         v-model="selectedColor">
-    </ui-select>
+    </ui-select> -->
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import UiSelect from "keen-ui/src/UiSelect.vue";
 import { IProduct, IEnumModel, IProductColor, IProductSize } from "@/store/models";
 import colors from "@/store/modules/color";
 
 @Component({
     components: {
-        UiSelect
     }
 })
 export default class ColorSelection extends Vue {    

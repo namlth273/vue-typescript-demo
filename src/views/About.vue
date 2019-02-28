@@ -37,11 +37,12 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import Buefy from "buefy";
 import inventories from "@/store/modules/inventory";
-import { IProduct, IEnumModel, IProductColor, IProductSize, ISeacchInventoryOption } from "@/store/models";
-
-Vue.use(Buefy);
+import {
+  IProduct, IEnumModel,
+  IProductColor, IProductSize,
+  ISeacchInventoryOption 
+  } from "@/store/models";
 
 @Component({
   components: {

@@ -1,5 +1,6 @@
 <template>
-    <b-pagination class="iot-module-paging"
+    <div></div>
+    <!-- <b-pagination class="iot-module-paging"
         @change="onPageChange"
         align="center"
         size="md"
@@ -11,7 +12,7 @@
         <div slot="prev-text"><span class="paging-arrow back single"></span></div>
         <div slot="next-text"><span class="paging-arrow single"></span></div>
         <div slot="last-text"><span class="paging-arrow"></span></div>
-    </b-pagination>
+    </b-pagination> -->
 </template>
 
 <script lang="ts">

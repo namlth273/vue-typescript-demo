@@ -26,7 +26,6 @@ module.exports = {
 
     transpileDependencies: [
         /\bvue-awesome\b/
-        // /node_modules[/\\\\]vuetify[/\\\\]/
     ],
 
     chainWebpack: (config) => {
@@ -42,21 +41,21 @@ module.exports = {
         //     options.transpileOnly = true;
         //     return options;
         // });
-        const oneOfsMap = config.module.rule('scss').oneOfs.store
-        oneOfsMap.forEach(item => {
-        item
-            .use('sass-resources-loader')
-            .loader('sass-resources-loader')
-            .options({
-                resources: [
-                    '@/scss/_variables.scss',
-                    // './node_modules/@fortawesome/fontawesome-free/scss/solid.scss',
-                    './node_modules/bootstrap/scss/_functions.scss',
-                    // './node_modules/bootstrap/scss/_variables.scss',
-                    './node_modules/bootstrap/scss/_mixins.scss'
-            ]})
-            .end()
-        })
+        // const oneOfsMap = config.module.rule('scss').oneOfs.store
+        // oneOfsMap.forEach(item => {
+        // item
+        //     .use('sass-resources-loader')
+        //     .loader('sass-resources-loader')
+        //     .options({
+        //         resources: [
+        //             '@/scss/_variables.scss'
+        //             // './node_modules/@fortawesome/fontawesome-free/scss/solid.scss',
+        //             // './node_modules/bootstrap/scss/_functions.scss',
+        //             // './node_modules/bootstrap/scss/_variables.scss',
+        //             // './node_modules/bootstrap/scss/_mixins.scss'
+        //     ]})
+        //     .end()
+        // })
         // config.optimization.splitChunks({
         //     cacheGroups: {
         //         vendorStyles: {

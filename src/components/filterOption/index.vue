@@ -1,35 +1,27 @@
 <template>
     <div>
-        <b-form-row v-for="(model, index) in getDynamicFilterOptions" :key="model.id.toString()">
+        <!-- <b-form-row v-for="(model, index) in getDynamicFilterOptions" :key="model.id.toString()">
             <b-col sm="11">
                 <b-form-row class="mb-3">
                     <b-col>
-                            <!-- <b-form-select v-model="model.selectedField">
-                                <option :value="null" selected>Select field...</option>
-                                <option class="" v-for="(option_obj, option) in model.fields"
-                                    :key="option"
-                                    :value="option">
-                                {{option}}
-                                </option>
-                            </b-form-select> -->
-                            <b-form-select v-model="model.selectedField">
-                                <option :value="null" selected>Select field...</option>
-                                <option class="" v-for="option in filterFields"
-                                    :key="option.value"
-                                    :value="option.value">
-                                {{option.text}}
-                                </option>
-                            </b-form-select>
+                        <b-form-select v-model="model.selectedField">
+                            <option :value="null" selected>Select field...</option>
+                            <option class="" v-for="option in filterFields"
+                                :key="option.value"
+                                :value="option.value">
+                            {{option.text}}
+                            </option>
+                        </b-form-select>
                     </b-col>
                     <b-col>
-                            <b-form-select v-model="model.selectedFilter">
-                                <option :value="null" selected>Select filter...</option>
-                                <option class="" v-for="option in model.fields[model.selectedField]"
-                                    :key="option.value"
-                                    :value="option.value">
-                                {{option.text}}
-                                </option>
-                            </b-form-select>
+                        <b-form-select v-model="model.selectedFilter">
+                            <option :value="null" selected>Select filter...</option>
+                            <option class="" v-for="option in model.fields[model.selectedField]"
+                                :key="option.value"
+                                :value="option.value">
+                            {{option.text}}
+                            </option>
+                        </b-form-select>
                     </b-col>
                     <b-col class="d-flex justify-content-center align-items-center">
                         <b-input disabled v-if="!model.selectedField"/>
@@ -69,7 +61,7 @@
                     <span>Trigger filter...</span>
                 </ui-button>
             </b-col>
-        </b-row>
+        </b-row> -->
     </div>
 </template>
 
@@ -78,18 +70,16 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Guid } from "guid-typescript";
 import * as services from "./services";
 import inventories from "@/store/modules/inventory";
-import UiButton from "keen-ui/src/UiButton.vue";
-import UiCheckbox from "keen-ui/src/UiCheckbox.vue";
-import UiDatepicker from "keen-ui/src/UiDatepicker.vue";
-import { IDynamicFilterOption, IDynamicFilterField, IFilterOption, IBaseFilterService,
-    ISelectOption, IDictionary, IDynamicThirdColumnFieldType } from "@/store/models";
+import {
+    IDynamicFilterOption, IBaseFilterService,
+    IDynamicFilterField, IFilterOption,
+    ISelectOption, IDictionary,
+    IDynamicThirdColumnFieldType 
+    } from "@/store/models";
 import { IProduct } from "@/store/models";
 
 @Component({
     components: {
-        UiButton,
-        UiCheckbox,
-        UiDatepicker
     }
 })
 export default class FilterOption extends Vue {

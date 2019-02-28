@@ -1,5 +1,6 @@
 <template>
-    <b-container fluid>
+    <div></div>
+    <!-- <b-container fluid>
         <b-row>
             <b-col md="6" offset="3">
                 <div class="form-group">
@@ -36,7 +37,6 @@
                     :currentPage="currentPage"
                 >
                     <template slot="actions" slot-scope="row">
-                        <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
                         <ui-button color="info" @click.stop="editProduct(row.item)">
                             <v-icon name="pen"/>
                         </ui-button>
@@ -53,18 +53,16 @@
                 />
             </b-col>
             </b-row>
-    </b-container>
+    </b-container> -->
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IProduct, ISaveProduct } from "@/store/models";
 import products from "@/store/modules/product";
-import UiButton from "keen-ui/src/UiButton.vue";
 
 @Component({
     components: {
-        UiButton,
     }
 })
 export default class Product extends Vue {

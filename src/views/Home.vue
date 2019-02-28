@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid home">
+  <div></div>
+  <!-- <div class="container-fluid home">
     <b-row class="my-3">
       <b-col>
         <b-button primary v-b-modal.modal1>Launch demo modal</b-button>
@@ -32,14 +33,6 @@
       </div>
       <div class="col-12 col-md-4">
         <SizeSelection></SizeSelection>
-        <!-- <b-form-select v-model="selectedSize">
-          <option :value="null" selected>Select Size</option>
-          <option v-for="option in getSizes"
-            :key="option.id"
-            :value="option">
-            {{option.description}}
-          </option>
-        </b-form-select> -->
       </div>
     </div>
     <div class="row mb-3">
@@ -49,18 +42,6 @@
       <div class="col-4">
         <b-form-input id="`txtSellPrice" type="number" placeholder="Sell price..." v-model="sellPrice"></b-form-input>
       </div>
-    </div>
-    <div class="d-flex justify-content-center">
-        
-      <!-- <b-form-select v-model="selectedColor" class="col-md-2 mx-3">
-        <option :value="null" selected>Select Color</option>
-        <option class="" v-for="option in getColors"
-          :key="option.id"
-          :value="option">
-          {{option.description}}
-        </option>
-      </b-form-select> -->
-      
     </div>
     <div class="row mb-3">
       <div class="col-12 col-md-4 offset-md-2 input-with-progress">
@@ -100,7 +81,6 @@
           responsive
         >
           <template slot="actions" slot-scope="row">
-            <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
             <ui-button color="primary" :loading="isBuyBtnLoading" @click.stop="buyProduct(row.item, row.index, $event.target)">
               <v-icon name="plus"/>
             </ui-button>
@@ -156,7 +136,6 @@
           </template>
           <template slot="actions" slot-scope="row">
             <div class="d-flex no-wrap justitfy-content-center align-items-center">
-              <!-- we use @click.stop here to prevent emitting of a "row-clicked" event  -->
               <ui-button class="mx-2" color="primary"
                 :loading="isBuyBtnLoading"
                 @click.stop="buyProductInventory(row.item, row.index, $event.target)">
@@ -167,9 +146,6 @@
                 @click.stop="sellProductInventory(row.item, row.index, $event.target)">
                 <v-icon name="dollar-sign"/>
               </ui-button>
-              <!-- <button class="btn btn-primary" @click.stop="sellProductInventory(row.item, row.index, $event.target)" :disabled="!isSellBtnActive(row.item)">
-                  Sell
-              </button> -->
             </div>
           </template>
         </b-table>
@@ -180,7 +156,7 @@
         <IotModulesPagination></IotModulesPagination>
       </b-col>
     </b-row>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -196,11 +172,6 @@ import products from "@/store/modules/product";
 import inventories from "@/store/modules/inventory";
 import colors from "@/store/modules/color";
 import sizes from "@/store/modules/size";
-import "keen-ui/src/bootstrap";
-import UiButton from "keen-ui/src/UiButton.vue";
-import UiSelect from "keen-ui/src/UiSelect.vue";
-import UiCheckbox from "keen-ui/src/UiCheckbox.vue";
-import UiProgressCircular from "keen-ui/src/UiProgressCircular.vue";
 import ColorSelection from "@/components/color-selection.vue";
 import SizeSelection from "@/components/size-selection.vue";
 import "@/scss/home.scss";
@@ -211,10 +182,6 @@ import "@/scss/home.scss";
     FilterOption,
     ColorSelection,
     SizeSelection,
-    UiButton,
-    UiSelect,
-    UiCheckbox,
-    UiProgressCircular
   },
   filters: {
     formatDate: (value): string => {

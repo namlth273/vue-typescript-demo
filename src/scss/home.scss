@@ -90,42 +90,17 @@
     }
 }
 
-// .ui-select.form-control {
-//     padding-left: unset;
-//     padding-right: unset;
-// }
-
-// .ui-select.is-active:not(.is-disabled) .ui-select__display {
-//     border: unset;
-// }
-
 .paging-arrow
 {
     display: inline-block;
     border-radius: 50%;	
 }
 
-// #freccia:hover .paging-arrow
-// {
-//     display: inline-block;
-//     border-radius: 50%;
-//     border: 0.15em solid #4183D7;
-// }
-
-// #freccia:hover .paging-arrow:after
-// {
-//     border-top: 0.15em solid #4183D7;
-//     border-right: 0.15em solid #4183D7;
-// }
-
 .paging-arrow
 {
     display: inline-block;
     width: 1rem;
     height: 1rem;
-    // border: 0.15rem solid #333;
-    // border-radius: 50%;
-    // margin-left: 0.75rem;
     transition: all 0.1s ease-out;
 }
 

@@ -1,5 +1,6 @@
 <template>
-    <ui-select
+    <div></div>
+    <!-- <ui-select
         has-search
         floatingLabel
         label="Size"
@@ -7,18 +8,16 @@
         :keys="{ label: 'description', value: 'id' }"
         :options="getSizes"
         v-model="selectedSize">
-    </ui-select>
+    </ui-select> -->
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import UiSelect from "keen-ui/src/UiSelect.vue";
 import { IProduct, IEnumModel, IProductSize } from "@/store/models";
 import sizes from "@/store/modules/size";
 
 @Component({
     components: {
-        UiSelect
     }
 })
 export default class SizeSelection extends Vue {    
