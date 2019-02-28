@@ -1,9 +1,46 @@
 <template>
   <section>
-    <div class="level">
-      <div class="level-item">
-        <b-field label="Name" horizontal>
+    <div class="columns is-centered">
+      <div class="column is-6 box">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Color</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select>
+                    <option>Business development</option>
+                    <option>Marketing</option>
+                    <option>Sales</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <b-field label="Size" horizontal>
+          <div class="select">
+            <select>
+              <option>Select...</option>
+              <option>With options</option>
+            </select>
+          </div>
+        </b-field>
+        <b-field label="Buy Price" horizontal>
           <b-input type="number" placeholder="Buy price..." v-model="buyPrice"></b-input>
+        </b-field>
+        <b-field label="Sell Price" horizontal>
+          <b-input type="number" placeholder="Sell price..." v-model="sellPrice"></b-input>
+        </b-field>
+        <b-field label="Sort by" horizontal>
+          <div class="select">
+            <select>
+              <option>Select...</option>
+              <option>With options</option>
+            </select>
+          </div>
         </b-field>
       </div>
     </div>
@@ -59,6 +96,7 @@ export default class About extends Vue {
   }
 
   buyPrice: number | null = null;
+  sellPrice: number | null = null;
   filters: ISeacchInventoryOption = {
     name: "",
     buyPrice: ""
