@@ -21,7 +21,7 @@
           </div>
         </div>
         <b-field label="Size" horizontal>
-          <div class="select">
+          <div class="select is-fullwidth">
             <select>
               <option>Select...</option>
               <option>With options</option>
@@ -108,3 +108,6 @@ export default class About extends Vue {
 }
 </script>
 
+<style lang="scss" scoped>
+$label-weight: 400;
+</style>

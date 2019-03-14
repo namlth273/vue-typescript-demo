@@ -25,7 +25,7 @@ module.exports = {
     },
 
     transpileDependencies: [
-        /\bvue-awesome\b/
+        'vuex'
     ],
 
     chainWebpack: (config) => {
