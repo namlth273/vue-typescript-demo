@@ -1,4 +1,4 @@
-import { baseApi } from "@/store/api";
+import baseApi from "@/store/api";
 import { IProductColor } from "../models";
 
 export async function getAll(): Promise<Array<IProductColor>> {

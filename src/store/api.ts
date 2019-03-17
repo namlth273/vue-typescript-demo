@@ -1,9 +1,8 @@
 import axios from "axios";
 import apps from "@/store/modules/apps";
 
-export const baseApi = axios.create({
+const baseApi = axios.create({
     baseURL: process.env.VUE_APP_BASE_URI
-    // baseURL: "https://namlth-demo-api.azurewebsites.net/api"
 });
 
 baseApi.interceptors.request.use(
@@ -11,19 +10,22 @@ baseApi.interceptors.request.use(
         apps.setIsLoading(true);
         return config;
     },
-    // (error) => {
-    //     apps.setIsLoading(false);
-    //     return Promise.reject(error);
-    // }
+    (error) => {
+        apps.setIsLoading(false);
+        return Promise.reject(error);
+    }
 );
 
 baseApi.interceptors.response.use(
-    (config) => {
+    (response) => {
         apps.setIsLoading(false);
-        return config;
+        return response;
     },
-    // (error) => {
-    //     apps.setIsLoading(false);
-    //     return Promise.reject(error);
-    // }
+    (error) => {
+        apps.setIsLoading(false);
+        console.log(error.response.data);
+        return Promise.reject(error);
+    }
 );
+
+export default baseApi;
