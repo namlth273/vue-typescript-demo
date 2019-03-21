@@ -26,6 +26,11 @@ export default new Router({
           path: "product",
           component: () => import(/* webpackChunkName: "product" */ "@/views/product/index.vue"),
         }
+        ,
+        {
+          path: "radar",
+          component: () => import(/* webpackChunkName: "radar" */ "@/views/radar/index.vue"),
+        }
       ]
     }
   ]

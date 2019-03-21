@@ -5,6 +5,7 @@
                 <router-link class="navbar-item" to="/">Home</router-link>
                 <router-link class="navbar-item" to="/product">Product</router-link>
                 <router-link class="navbar-item" to="/inventory">Inventory</router-link>
+                <router-link class="navbar-item" to="/radar">Radar Slider</router-link>
                 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
