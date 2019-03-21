@@ -1,4 +1,4 @@
-import { baseApi } from "@/store/api";
+import baseApi from "@/store/api";
 import { IEnumModel } from "../models";
 
 export async function getAll(): Promise<IEnumModel[]> {

@@ -1,4 +1,3 @@
-
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~bulma/sass/utilities/_all";
@@ -8,11 +7,6 @@
 html, body, #app-main {
     height: 100%;
     font-family: "Lato";
-}
-
-.content {
-  margin-top: 56px;
-  background: #F7F9FC;
 }
 
 .content-title {

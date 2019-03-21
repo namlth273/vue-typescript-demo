@@ -8,14 +8,14 @@ import {
 import store from "@/store";
 import { IProductColor } from "@/store/models";
 import { getAll } from "@/store/apis/color-api";
-  
+
 @Module({
   namespaced: true,
   name: "colors",
   store,
   dynamic: true,
 })
-class ColorsModule extends VuexModule {
+export class ColorsModule extends VuexModule {
   colors: Array<IProductColor> = new Array<IProductColor>();
   selectedColor: IProductColor = {} as IProductColor;
 
