@@ -25,7 +25,8 @@ module.exports = {
     },
 
     transpileDependencies: [
-        'vuex'
+        // 'vuex',
+        // 'core-js/fn/promise'
     ],
 
     chainWebpack: (config) => {
