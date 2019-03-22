@@ -63,12 +63,23 @@
                 </div>
             </div>
             <b-collapse
+                aria-id="contentProductAddForm"
+                :open.sync="isProductAddFormOpen">
+                <div class="columns">
+                    <div class="column is-12">
+                        <div class="box">
+                            <ProductAddForm @added="added"></ProductAddForm>
+                        </div>
+                    </div>
+                </div>
+            </b-collapse>
+            <b-collapse
                 aria-id="contentProductForm"
                 :open.sync="isProductFormOpen">
                 <div class="columns">
                     <div class="column is-12">
                         <div class="box">
-                            <ProductForm :modelProduct="getProduct" @clear="clear"></ProductForm>
+                            <ProductForm :modelProduct="getProduct" @clear="clear" @saved="saved"></ProductForm>
                         </div>
                     </div>
                 </div>
@@ -77,9 +88,9 @@
                 <div class="column is-12">
                     <button
                         class="button is-info"
-                        @click="isProductFormOpen = !isProductFormOpen"
-                        aria-controls="contentProductForm">
-                        Add/Edit
+                        @click="isProductAddFormOpen = !isProductAddFormOpen"
+                        aria-controls="contentProductAddForm">
+                        Add
                     </button>
                 </div>
             </div>
@@ -101,16 +112,18 @@ import products from "./store";
 import ProductTable from "./_/ProductTable.vue";
 import ProductFilter from "./_/ProductFilter.vue";
 import ProductForm from "./_/ProductForm.vue";
+import ProductAddForm from "./_/ProductAddForm.vue";
 
 @Component({
     components: {
         ProductTable,
         ProductFilter,
-        ProductForm
+        ProductForm,
+        ProductAddForm
     }
 })
 export default class Product extends Vue {
-    // isProductFormOpen: boolean = false;
+    isProductAddFormOpen: boolean = false;
 
     get isProductFormOpen(): boolean {
         return products.selectedProduct != null;
@@ -122,6 +135,16 @@ export default class Product extends Vue {
 
     clear() {
         products.setSelectedProduct(null);
+    }
+
+    added() {
+        products.search();
+        this.isProductAddFormOpen = !this.isProductAddFormOpen;
+    }
+
+    saved() {
+        products.search();
+        this.clear();
     }
     
     // btnAddText: string = "Add";
