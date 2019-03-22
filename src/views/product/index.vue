@@ -68,7 +68,7 @@
                 <div class="columns">
                     <div class="column is-12">
                         <div class="box">
-                            <ProductForm :modelProduct="getProduct"></ProductForm>
+                            <ProductForm :modelProduct="getProduct" @clear="clear"></ProductForm>
                         </div>
                     </div>
                 </div>
@@ -110,16 +110,18 @@ import ProductForm from "./_/ProductForm.vue";
     }
 })
 export default class Product extends Vue {
-    isProductFormOpen: boolean = false;
+    // isProductFormOpen: boolean = false;
 
-    get getProducts() {
-        return products.filteredProducts;
+    get isProductFormOpen(): boolean {
+        return products.selectedProduct != null;
     }
 
-    get getProduct() {
-        if (this.getProducts && this.getProducts.length > 0) {
-            return Object.assign({}, this.getProducts[0]);
-        }
+    get getProduct(): IProduct {
+        return Object.assign({}, products.selectedProduct);
+    }
+
+    clear() {
+        products.setSelectedProduct(null);
     }
     
     // btnAddText: string = "Add";

@@ -14,9 +14,12 @@
             <div class="field-label is-normal">
             </div>
             <div class="field-body">
-                <div class="field">
+                <div class="field is-grouped">
                     <div class="control">
                         <button type="submit" class="button is-link">{{getProduct["id"] != null ? "Add" : "Edit"}}</button>
+                    </div>
+                    <div class="control">
+                        <button type="button" class="button is-primary" @click="clear()">Clear</button>
                     </div>
                 </div>
             </div>
@@ -35,7 +38,7 @@ import { IProduct, ISaveProduct } from "@/store/models";
 })
 export default class ProductForm extends Vue {
     @Prop() readonly propProduct!: ISaveProduct;
-    @Model("change") readonly modelProduct!: ISaveProduct;
+    @Model("clear") readonly modelProduct!: ISaveProduct;
     product: ISaveProduct = {} as ISaveProduct;
 
     get getProduct() {
@@ -52,6 +55,10 @@ export default class ProductForm extends Vue {
                 products.search();
             }
         });
+    }
+
+    clear() {
+        this.$emit("clear");
     }
 }
 </script>

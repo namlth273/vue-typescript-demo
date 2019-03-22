@@ -15,6 +15,7 @@ class ProductsModule extends VuexModule {
   itemsPerPage: number = 3;
   currentPage: number = 1;
   filterOption: ISaveProduct = {} as ISaveProduct;
+  selectedProduct: IProduct | null = null;
 
   @Mutation
   setItemPerPage(value: number) {
@@ -34,6 +35,11 @@ class ProductsModule extends VuexModule {
   @Mutation
   setFilterOption(option: ISaveProduct) {
     this.filterOption = option;
+  }
+
+  @Mutation
+  setSelectedProduct(value: IProduct | null) {
+    this.selectedProduct = value;
   }
 
   @Mutation
