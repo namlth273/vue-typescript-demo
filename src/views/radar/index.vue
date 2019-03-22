@@ -62,7 +62,6 @@ export default class Radar extends Vue {
     }
 
     click(value: number) {
-        console.log(value);
         this.activeOptionId = value;
     }
 }
