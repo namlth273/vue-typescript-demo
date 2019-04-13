@@ -11,11 +11,11 @@ export default new Router({
     {
       path: "/",
       name: "iot",
-      redirect: "/home",
+      redirect: "/",
       component: Layout,
       children: [
         {
-          path: "home",
+          path: "/",
           component: () => import(/* webpackChunkName: "home" */ "@/views/home/index.vue"),
         },
         {
