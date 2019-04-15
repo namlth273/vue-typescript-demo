@@ -1,4 +1,4 @@
-FROM node:10.15.3-jessie-slim as build-stage
+FROM node as build-stage
 WORKDIR /app
 
 COPY package*.json /app/
@@ -13,5 +13,6 @@ FROM nginx
 
 COPY --from=build-stage /app/dist/ /usr/share/nginx/html
 
+#cd C:\SourceCode\vue-typescript-demo
 #docker build -t vue-typescript-demo .
 #docker run -d -p 8001:80 vue-typescript-demo
