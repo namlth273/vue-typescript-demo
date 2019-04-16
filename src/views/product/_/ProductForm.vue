@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Model } from "vue-property-decorator";
+import { Component, Vue, Model } from "vue-property-decorator";
 import products from "../store";
 import { IProduct, ISaveProduct } from "@/store/models";
 
@@ -37,15 +37,10 @@ import { IProduct, ISaveProduct } from "@/store/models";
     }
 })
 export default class ProductForm extends Vue {
-    @Prop() readonly propProduct!: ISaveProduct;
     @Model("clear") readonly modelProduct!: ISaveProduct;
-    product: ISaveProduct = {} as ISaveProduct;
 
     get getProduct() {
-        if (this.modelProduct)
-            return this.modelProduct;
-        else
-            return this.product;
+        return this.modelProduct;
     }
 
     save() {

@@ -20,6 +20,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box">
+                        <div class="radio-custom">
+                        </div>
+                        <div class="radio-custom">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -68,114 +74,158 @@ export default class Radar extends Vue {
 </script>
 
 <style lang="scss">
-    .radar-slider {
-        background: lightblue;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 30px;
-        margin-top: 0.5rem;
+.radar-slider {
+    background: lightblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 30px;
+    margin-top: 0.5rem;
+}
+
+.radar-slider-top {
+    margin-top: 3rem;
+    background: lightblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-option {
+    flex: 1 1 0;
+    width: 0;
+    align-items: center;
+    position: relative;
+    display: flex;
+
+    &:before {
+        content: "";
+        top: calc(50%);
+        z-index: 1;
+        border: 1px solid black;
+        position: absolute;
+        left: -1px;
+        right: 0%;
+        z-index: 1;
     }
 
-    .radar-slider-top {
-        margin-top: 3rem;
-        background: lightblue;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .slider-option {
-        flex: 1 1 0;
-        width: 0;
-        align-items: center;
-        position: relative;
-        display: flex;
-
-        &:before {
-            content: "";
-            top: calc(50%);
-            z-index: 1;
-            border: 1px solid black;
-            position: absolute;
-            left: -1px;
-            right: 0%;
-            z-index: 1;
-        }
-
-        &:after {
-            content: "";
-            z-index: 1;
-            border: 1px solid black;
-            position: absolute;
-            top: -50%;
-            height: 100%;
-            left: 50%;
-            transform: translateY(50%);
-        }
-    }
-
-    .slider-option-top {
-        flex: 1 1 0;
-        width: 0;
-        align-items: center;
-        position: relative;
-        display: flex;
-        justify-content: center;
-    }
-
-    .slider-content {
-        text-align: center;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        height: 100px;
-        flex: 1 0;
-    }
-
-    .slider-option.first {
-        justify-content: flex-end;
-    }
-
-    .slider-option.last {
-        justify-content: flex-start;
-    }
-
-    .slider-option.first:before {
+    &:after {
+        content: "";
+        z-index: 1;
+        border: 1px solid black;
+        position: absolute;
+        top: -50%;
+        height: 100%;
         left: 50%;
+        transform: translateY(50%);
+    }
+}
+
+.slider-option-top {
+    flex: 1 1 0;
+    width: 0;
+    align-items: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.slider-content {
+    text-align: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    flex: 1 0;
+}
+
+.slider-option.first {
+    justify-content: flex-end;
+}
+
+.slider-option.last {
+    justify-content: flex-start;
+}
+
+.slider-option.first:before {
+    left: 50%;
+}
+
+.slider-option.last:before {
+    right: 50%;
+}
+
+.slider-option.active {
+    background: lightsalmon;
+    opacity: 0.2;
+}
+
+.slider-option.first .slider-content {
+    background: lightgreen;
+    flex: 0 0 50%;
+}
+
+.slider-option.last .slider-content {
+    background: lightgreen;
+    flex: 0 0 50%;
+}
+
+.slider-content:hover {
+    background: lightslategray;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.slider-option-top-icon {
+    font-size: 2rem;
+    display: none;
+
+    &.active {
+        display: block;
+    }
+}
+
+.radio-custom {
+    // background: transparent;
+    width: 1.2rem;
+    height: 1.2rem;
+    // border: 1px solid #cccccc;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    transition: border 0.15s ease-in-out;
+
+    &:before {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: 0.65rem;
+        height: 0.65rem;
+        // border: 1px solid lightgray;
+        border-radius: 50%;
+        background: #337ab7;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
     }
 
-    .slider-option.last:before {
-        right: 50%;
+    &:after {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 1px solid #cccccc;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
     }
 
-    .slider-option.active {
-        background: lightsalmon;
-        opacity: 0.2;
+    &:hover {  
+        border: 1px solid #337ab7;   
     }
-
-    .slider-option.first .slider-content {
-        background: lightgreen;
-        flex: 0 0 50%;
-    }
-
-    .slider-option.last .slider-content {
-        background: lightgreen;
-        flex: 0 0 50%;
-    }
-
-    .slider-content:hover {
-        background: lightslategray;
-        opacity: 0.5;
-        cursor: pointer;
-    }
-
-    .slider-option-top-icon {
-        font-size: 2rem;
-        display: none;
-
-        &.active {
-            display: block;
-        }
-    }
+}
 </style>
