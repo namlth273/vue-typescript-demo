@@ -5,7 +5,7 @@ module.exports = {
             warnings: true,
             errors: true
         },
-        proxy: 'http://localhost:11872',
+        proxy: 'http://localhost:8002',
         // proxy: 'https://namlth-demo-api.azurewebsites.net/',
         port: 9001
     },
