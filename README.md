@@ -27,3 +27,8 @@ Choose backup file from this url: c:/var/opt/mssql/backup
 Relocate all files to folder:
 - Data file folder: c:/var/opt/mssql/data/
 - Log file folder: c:/var/opt/mssql/data/
+```
+## Run this command to stop:
+```
+docker-compose -f "docker-compose.yml" down
+```
