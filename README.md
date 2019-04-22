@@ -17,6 +17,7 @@ npm run build
 
 # Docker
 Make sure you have Db backup file in C:/Sources
+
 Create new file .env.production.local and put the following:
 ```
 VUE_APP_BASE_URI=http://localhost:8002/api
