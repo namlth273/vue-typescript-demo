@@ -15,15 +15,15 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+# Docker
+Make sure you have Db backup file in C:/Sources
+## Run this command to start:
 ```
-npm run test
+docker-compose -f "docker-compose.yml" up -d
 ```
-
-### Lints and fixes files
+## Restore Database file (I haven't automate this process yet)
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Choose backup file from this url: c:/var/opt/mssql/backup
+Relocate all files to folder:
+- Data file folder: c:/var/opt/mssql/data/
+- Log file folder: c:/var/opt/mssql/data/
