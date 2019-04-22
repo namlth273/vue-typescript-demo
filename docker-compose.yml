@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  web:
+    image: vue-typescript-demo:latest
+    container_name: web1
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8001:80
+    depends_on:
+      - db
+      - api
+    networks:
+      - vue-prod-network
+      #vue-prod-network:
+        #aliases:
+          #- web1.internal.prod.example.com
+  api:
+    image: demowebapi:latest
+    container_name: api1
+    build:  ../DemoPattern/
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      DB_CONNECTION_STRING: "Server=db;Database=DemoPattern;Persist Security Info=False;User ID=sa;Password=P@ssw0rd@123;"
+    ports:
+      - 8002:80
+    #expose:
+      #- "80"
+    depends_on:
+      - db
+    networks:
+      - vue-prod-network
+      #vue-prod-network:
+        #aliases:
+          #- api1.internal.prod.example.com
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: sql1
+    ports:
+      - 1434:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "P@ssw0rd@123"
+    networks:
+      - vue-prod-network
+      #vue-prod-network:
+        #aliases:
+          #- db1.internal.prod.example.com
+networks:
+  vue-prod-network:
+    driver: bridge
+
+#docker-compose -f "docker-compose.yml" up -d --build
+#docker-compose -f "docker-compose.yml" down
+#docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd@123' -p 1434:1433 --name sql1 -d mcr.microsoft.com/mssql/server
+#docker exec -it sql1 mkdir /var/opt/mssql/backup
+#docker cp DemoPattern.bak sql1:/var/opt/mssql/data

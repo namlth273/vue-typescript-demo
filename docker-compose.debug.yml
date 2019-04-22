@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  front:
+    image: front:latest
+    container_name: front
+    hostname: front
+    build:
+      context: .
+      dockerfile: dev.dockerfile
+    volumes:
+      - ./:/usr/front
+      - /usr/front/node_modules
+    ports:
+      - '9001:9001'
+    environment:
+      - NODE_ENV=development
+    networks:
+      - devnetwork
+networks:
+  devnetwork:
+    driver: bridge
+#docker-compose -f docker-compose.debug.yml up -d
+#docker-compose -f docker-compose.debug.yml down
