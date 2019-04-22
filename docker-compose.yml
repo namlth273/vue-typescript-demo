@@ -43,6 +43,8 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "P@ssw0rd@123"
+    #volumes:
+          #- C:\Sources:/var/opt/mssql/backup
     networks:
       - vue-prod-network
       #vue-prod-network:
